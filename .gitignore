@@ -1,52 +1,3 @@
-<<<<<<< HEAD
-# Python
-__pycache__/
-*.py[cod]
-*.pyo
-*.pyd
-*.pyc
-*.pkl
-*.db
-
-# Django
-*.log
-local_settings.py
-db.sqlite3
-media/
-staticfiles/
-
-# Environment
-.env
-*.env
-*.bak
-
-# Docker
-*.pid
-*.seed
-docker-compose.override.yml
-docker-compose.debug.yml
-*.tar
-
-# VSCode / IDEs
-.vscode/
-.idea/
-*.swp
-*.swo
-
-# Node (if used later)
-node_modules/
-
-# OS
-.DS_Store
-Thumbs.db
-
-# Migrations (optional — if you want clean history)
-**/migrations/*.py
-!**/migrations/__init__.py
-
-# Git
-*.orig
-=======
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -177,8 +128,6 @@ celerybeat.pid
 *.sage.py
 
 # Environments
-.env
-.venv
 env/
 venv/
 ENV/
@@ -221,4 +170,3 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
->>>>>>> bdb3c2b0ae45bb0f06b0d2aa852751ef148848d3
