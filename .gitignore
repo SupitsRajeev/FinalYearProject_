@@ -1,0 +1,47 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+*.pkl
+*.db
+
+# Django
+*.log
+local_settings.py
+db.sqlite3
+media/
+staticfiles/
+
+# Environment
+.env
+*.env
+*.bak
+
+# Docker
+*.pid
+*.seed
+docker-compose.override.yml
+docker-compose.debug.yml
+*.tar
+
+# VSCode / IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Node (if used later)
+node_modules/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Migrations (optional — if you want clean history)
+**/migrations/*.py
+!**/migrations/__init__.py
+
+# Git
+*.orig
