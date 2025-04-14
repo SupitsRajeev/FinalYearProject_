@@ -1,0 +1,13 @@
+body, html {
+    height: 100%;
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.landing-bg {
+    background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)),
+                url('/static/images/landing-bg.jpg') no-repeat center center;
+    background-size: cover;
+    height: 100vh;
+    padding: 20px;
+}
