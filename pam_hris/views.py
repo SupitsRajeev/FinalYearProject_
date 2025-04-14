@@ -1,6 +1,11 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from .models import UserPriviledge
+from django.urls import path
+
+
+def landing_page(request):
+    return render(request, 'landing.html')
 
 @login_required
 def dashboard(request):
