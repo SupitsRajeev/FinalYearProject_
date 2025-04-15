@@ -87,8 +87,8 @@ WSGI_APPLICATION = 'pam_hris.wsgi.application'
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(BASE_DIR / '.env')
+LOGIN_REDIRECT_URL = '/redirect/'
 
-import os
 
 DATABASES = {
     'default': {
