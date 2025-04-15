@@ -1,29 +1,39 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser
 
-class User(models.Model):
-    def __str__(self):
-        return f"{self.name} ({self.email})"
+
+class User(AbstractUser):
     name = models.CharField(max_length=100)
     email = models.EmailField(unique=True)
     password = models.CharField(max_length=128)
     isHr = models.BooleanField(default=False)
     isIt = models.BooleanField(default=False)
+    is_privileged = models.BooleanField(default=False)  # Add this for full PAM access
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.name} ({self.email})"
 
 
 class UserPriviledgeGroup(models.Model):
-    def __str__(self):
-        return f"{self.name} ({self.email})"
     name = models.CharField(max_length=120)
-    role_level = models.IntegerField(unique=True)
+    role_level = models.IntegerField(unique=True)  # E.g., 1 = Normal, 2 = Manager, 3 = Admin
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-class UserPriviledge(models.Model):
     def __str__(self):
-        return f"{self.name} ({self.email})"
+        return f"{self.name} (Role Level {self.role_level})"
+
+
+class UserPriviledge(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     priviledge_group = models.ForeignKey(UserPriviledgeGroup, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.user.name} – {self.priviledge_group.name}"
+
+    REQUIRED_FIELDS = ['email']            
+    USERNAME_FIELD = 'username' 

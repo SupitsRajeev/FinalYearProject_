@@ -29,8 +29,9 @@ DEBUG = os.getenv('DEBUG', 'False') == 'True'
 ALLOWED_HOSTS = []
 
 LOGIN_URL = 'login'
-LOGIN_REDIRECT_URL = 'dashboard'
+LOGIN_REDIRECT_URL = '/hr/'
 LOGOUT_REDIRECT_URL = 'login'
+AUTH_USER_MODEL = 'pam_hris.User'
 
 
 
@@ -43,7 +44,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'pam_hris', 
+    'pam_hris',
+    'hr_management',
+    'it_management', 
     
 ]
 
@@ -85,16 +88,19 @@ WSGI_APPLICATION = 'pam_hris.wsgi.application'
 BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(BASE_DIR / '.env')
 
+import os
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.getenv('DB_NAME'),
-        'USER': os.getenv('DB_USER'),  # admin_user (not root)
-        'PASSWORD': os.getenv('DB_PASSWORD'),
-        'HOST': os.getenv('DB_HOST', 'db'),
-        'PORT': os.getenv('DB_PORT', '3306'),
+        'NAME': 'pamdb',
+        'USER': 'pamuser',
+        'PASSWORD': 'pampass',
+        'HOST': '127.0.0.1',
+        'PORT': '3306',
     }
 }
+
 
 
 
@@ -134,7 +140,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [BASE_DIR / "static"]  # for development
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
