@@ -1,0 +1,13 @@
+{% if is_hr %}
+    <h3>HR Department</h3>
+    {% for record in hr_data %}
+        <p>{{ record.name }} - {{ record.designation }}</p>
+    {% endfor %}
+{% endif %}
+
+{% if is_it %}
+    <h3>IT Department</h3>
+    {% for record in it_data %}
+        <p>{{ record.device }} - {{ record.status }}</p>
+    {% endfor %}
+{% endif %}
