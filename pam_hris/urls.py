@@ -1,19 +1,3 @@
-"""
-URL configuration for pam_hris project.
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/4.2/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
 from django.contrib.auth import views as auth_views
 from django.contrib import admin
 from django.urls import path
@@ -21,13 +5,25 @@ from . import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # path('', views.home, name='home'),  ← temporarily remove or comment this line
+
+    # 🌐 Landing and Auth
     path('', views.landing_page, name='landing'),
     path('login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
-     path('hr/', views.hr_application_view, name='hr_application'),
     path('logout/', auth_views.LogoutView.as_view(next_page='login'), name='logout'),
-    #path('hr/', views.hr_dashboard, name='hr_dashboard'),
-    #path('it/', views.it_dashboard, name='it_dashboard'),
+
+    # 🧠 Main Dashboard (shared)
+    path('hr/', views.hr_application_view, name='hr_application'),
+
+    # 🔐 Login Redirect Handler
+    path('redirect/', views.login_redirect, name='login_redirect'),
+
+    # 🧾 Role-specific dashboards
+    path('hr/dashboard/', views.hr_dashboard_view, name='hr_dashboard'),
+    path('it/dashboard/', views.it_dashboard_view, name='it_dashboard'),
+    path('admin/dashboard/', views.hr_application_view, name='admin_dashboard'),
+
+
+    # ❌ No privilege page
+    path('no_privilege/', views.no_privilege_fallback, name='no_privilege'),
+
 ]
-
-

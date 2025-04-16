@@ -1,6 +1,9 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from .models import User, UserPriviledge, UserPriviledgeGroup
+from it_management.models import SessionLog
+
+
 
 class CustomUserAdmin(UserAdmin):
     model = User
@@ -11,6 +14,9 @@ class CustomUserAdmin(UserAdmin):
         }),
     )
 
+
+
 admin.site.register(User, CustomUserAdmin)
 admin.site.register(UserPriviledge)
 admin.site.register(UserPriviledgeGroup)
+admin.site.register(SessionLog)
