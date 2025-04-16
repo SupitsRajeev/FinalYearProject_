@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.17.0
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false           # ✅ Disable security to skip token-based setup
+      - xpack.security.http.ssl.enabled=false  # ✅ (Optional but helps in dev)
+    ports:
+      - "9200:9200"
+    networks:
+      - elk
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.17.0
+    container_name: kibana
+    ports:
+      - "5601:5601"
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    networks:
+      - elk
+    depends_on:
+      - elasticsearch
+
+  logstash:
+    image: docker.elastic.co/logstash/logstash:8.17.0
+    container_name: logstash
+    volumes:
+      - ./logstash-pipeline:/usr/share/logstash/pipeline/
+    ports:
+      - "5044:5044"  # Used for Beats, optional for now
+      - "9600:9600"  # Optional: Logstash monitoring API
+    depends_on:
+      - elasticsearch
+
+    restart: always
+    
+    networks:
+      - elk
+
+networks:
+  elk:

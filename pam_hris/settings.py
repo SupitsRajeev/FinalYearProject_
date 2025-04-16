@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'pam_hris',
+    'pam_hris.apps.PamHrisConfig',
     'hr_management',
     'it_management', 
     

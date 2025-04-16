@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.utils.timezone import now
+
 
 
 class User(AbstractUser):
@@ -37,3 +39,19 @@ class UserPriviledge(models.Model):
 
     REQUIRED_FIELDS = ['email']            
     USERNAME_FIELD = 'username' 
+
+from django.db import models
+from django.utils.timezone import now
+from .models import User  # or wherever your custom User model is
+
+class SessionLog(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    login_time = models.DateTimeField(default=now)
+    logout_time = models.DateTimeField(null=True, blank=True)
+    ip_address = models.GenericIPAddressField(null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.login_time}"
+
+
+   
