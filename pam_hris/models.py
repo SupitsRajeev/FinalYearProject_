@@ -3,7 +3,6 @@ from django.contrib.auth.models import AbstractUser
 from django.utils.timezone import now
 
 
-
 class User(AbstractUser):
     name = models.CharField(max_length=100)
     email = models.EmailField(unique=True)
@@ -13,6 +12,12 @@ class User(AbstractUser):
     is_privileged = models.BooleanField(default=False)  # Add this for full PAM access
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def save(self, *args, **kwargs):
+        # Automatically mark superusers as privileged
+        if self.is_superuser:
+            self.is_privileged = True
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f"{self.name} ({self.email})"
@@ -37,12 +42,9 @@ class UserPriviledge(models.Model):
     def __str__(self):
         return f"{self.user.name} – {self.priviledge_group.name}"
 
-    REQUIRED_FIELDS = ['email']            
-    USERNAME_FIELD = 'username' 
+    REQUIRED_FIELDS = ['email']
+    USERNAME_FIELD = 'username'
 
-from django.db import models
-from django.utils.timezone import now
-from .models import User  # or wherever your custom User model is
 
 class SessionLog(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -52,6 +54,3 @@ class SessionLog(models.Model):
 
     def __str__(self):
         return f"{self.user.username} - {self.login_time}"
-
-
-   

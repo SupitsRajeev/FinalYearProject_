@@ -1,29 +1,47 @@
+import json
 from django.contrib.auth.signals import user_logged_in, user_logged_out
 from django.dispatch import receiver
 from django.utils.timezone import now
 from pam_hris.models import SessionLog
+from pathlib import Path
 
+LOG_FILE = Path("C:\FinalYearProject\elk\logstash-pipeline\sessionlogs.json")  # must match logstash.conf
 
-# ✅ Only use one consistent model
-from it_management.models import SessionLog  # or from pam_hris.models if that’s where you store logs
+def append_log_to_file(data):
+    with open(LOG_FILE, "a") as f:
+        json.dump(data, f)
+        f.write("\n")
 
-# ✅ LOGIN
 @receiver(user_logged_in)
 def log_login(sender, request, user, **kwargs):
-    SessionLog.objects.create(
+    session = SessionLog.objects.create(
         user=user,
         login_time=now(),
         ip_address=request.META.get('REMOTE_ADDR')
     )
+    # write to file
+    append_log_to_file({
+        "id": session.id,
+        "user_id": user.id,
+        "login_time": str(session.login_time),
+        "logout_time": None,
+        "ip_address": session.ip_address
+    })
 
-# ✅ LOGOUT
 @receiver(user_logged_out)
 def log_user_logout(sender, request, user, **kwargs):
     try:
-        last_session = SessionLog.objects.filter(user=user).latest('login_time')
-        if not last_session.logout_time:
-            last_session.logout_time = now()
-            last_session.save()
-            print("✅ Logout time updated!")
+        session = SessionLog.objects.filter(user=user).latest('login_time')
+        if not session.logout_time:
+            session.logout_time = now()
+            session.save()
+            # update file with logout (append as new log)
+            append_log_to_file({
+                "id": session.id,
+                "user_id": user.id,
+                "login_time": str(session.login_time),
+                "logout_time": str(session.logout_time),
+                "ip_address": session.ip_address
+            })
     except SessionLog.DoesNotExist:
-        print("⚠️ No session found to update logout time.")
+        pass
