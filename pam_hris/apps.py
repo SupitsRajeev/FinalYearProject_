@@ -5,4 +5,4 @@ class PamHrisConfig(AppConfig):
     name = 'pam_hris'
 
     def ready(self):
-        import pam_hris.signals  # only if you're using signals
+        import pam_hris.signals  # This must be here

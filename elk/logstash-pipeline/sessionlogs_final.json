@@ -1,0 +1,37 @@
+{"id": 1, "user_id": 5, "login_time": "2025-04-16 15:51:33.112236+00:00", "logout_time": null, "ip_address": "127.0.0.1"}
+{"id": 3, "user_id": 5, "login_time": "2025-04-17 03:37:37.482990+00:00", "logout_time": null, "ip_address": "127.0.0.1"}
+{"id": 4, "user_id": 4, "login_time": "2025-04-17 03:39:34.715690+00:00", "logout_time": null, "ip_address": "127.0.0.1"}
+{"id": 5, "user_id": 1, "login_time": "2025-04-17 15:10:15.429563+00:00", "logout_time": null, "ip_address": "127.0.0.1"}
+{"id": 6, "user_id": 4, "login_time": "2025-04-17 15:13:43.588386+00:00", "logout_time": null, "ip_address": "127.0.0.1"}
+{"id": 7, "user_id": 1, "login_time": "2025-04-17 15:14:48.148407+00:00", "logout_time": null, "ip_address": "127.0.0.1"}
+{"id": 8, "user_id": 1, "login_time": "2025-04-17 15:59:18.651657+00:00", "logout_time": null, "ip_address": "127.0.0.1"}
+{"id": 8, "user_id": 1, "login_time": "2025-04-17 15:59:18.651657+00:00", "logout_time": "2025-04-17 16:13:46.997105+00:00", "ip_address": "127.0.0.1"}
+{"id": 9, "user_id": 5, "login_time": "2025-04-17 16:14:49.588602+00:00", "logout_time": null, "ip_address": "127.0.0.1"}
+{"id": 9, "user_id": 5, "login_time": "2025-04-17 16:14:49.588602+00:00", "logout_time": "2025-04-17 16:14:58.200796+00:00", "ip_address": "127.0.0.1"}
+{"id": 10, "user_id": 1, "login_time": "2025-04-17 16:15:48.069465+00:00", "logout_time": null, "ip_address": "127.0.0.1"}
+{"id": 11, "user_id": 4, "login_time": "2025-04-17 16:39:34.502497+00:00", "logout_time": null, "ip_address": "127.0.0.1"}
+{"id": 11, "user_id": 4, "login_time": "2025-04-17 16:39:34.502497+00:00", "logout_time": "2025-04-17 16:59:01.123067+00:00", "ip_address": "127.0.0.1"}
+{"id": 12, "user_id": 4, "login_time": "2025-04-17 16:59:42.139273+00:00", "logout_time": null, "ip_address": "127.0.0.1"}
+{"id": 13, "user_id": 5, "login_time": "2025-04-17 17:00:01.700482+00:00", "logout_time": null, "ip_address": "127.0.0.1"}
+{"id": 14, "user_id": 5, "login_time": "2025-04-17 17:00:58.880128+00:00", "logout_time": null, "ip_address": "127.0.0.1"}
+{"id": 14, "user_id": 5, "login_time": "2025-04-17 17:00:58.880128+00:00", "logout_time": "2025-04-17 17:13:20.338300+00:00", "ip_address": "127.0.0.1"}
+
+{"id": 15, "user_id": 1, "login_time": "2025-04-18 03:44:29.461151+00:00", "logout_time": null, "ip_address": "127.0.0.1"}
+{"id": 16, "user_id": 7, "login_time": "2025-04-18 03:46:31.743234+00:00", "logout_time": null, "ip_address": "127.0.0.1"}
+{"id": 17, "user_id": 1, "login_time": "2025-04-18 03:47:54.252998+00:00", "logout_time": null, "ip_address": "127.0.0.1"}
+{"id": 18, "user_id": 1, "login_time": "2025-04-18 05:19:57.201500+00:00", "logout_time": null, "ip_address": "127.0.0.1"}
+{"id": 18, "user_id": 1, "login_time": "2025-04-18 05:19:57.201500+00:00", "logout_time": "2025-04-18 05:54:02.866111+00:00", "ip_address": "127.0.0.1"}
+{"id": 19, "user_id": 1, "login_time": "2025-04-18 05:54:11.855992+00:00", "logout_time": null, "ip_address": "127.0.0.1"}
+{"id": 19, "user_id": 1, "login_time": "2025-04-18 05:54:11.855992+00:00", "logout_time": "2025-04-18 05:54:24.919458+00:00", "ip_address": "127.0.0.1"}
+{"id": 20, "user_id": 1, "login_time": "2025-04-18 05:58:05.218558+00:00", "logout_time": null, "ip_address": "127.0.0.1"}
+{"id": 20, "user_id": 1, "login_time": "2025-04-18 05:58:05.218558+00:00", "logout_time": "2025-04-18 06:07:01.968650+00:00", "ip_address": "127.0.0.1"}
+{"id": 21, "user_id": 5, "login_time": "2025-04-18 06:07:55.836152+00:00", "logout_time": null, "ip_address": "127.0.0.1"}
+{"id": 21, "user_id": 5, "login_time": "2025-04-18 06:07:55.836152+00:00", "logout_time": "2025-04-18 06:20:48.744116+00:00", "ip_address": "127.0.0.1"}
+{"id": 22, "user_id": 7, "login_time": "2025-04-18 06:26:39.554742+00:00", "logout_time": null, "ip_address": "127.0.0.1"}
+{"id": 22, "user_id": 7, "login_time": "2025-04-18 06:26:39.554742+00:00", "logout_time": "2025-04-18 07:21:43.379275+00:00", "ip_address": "127.0.0.1"}
+{"id": 23, "user_id": 5, "login_time": "2025-04-18 07:22:04.645290+00:00", "logout_time": null, "ip_address": "127.0.0.1"}
+{"id": 23, "user_id": 5, "login_time": "2025-04-18 07:22:04.645290+00:00", "logout_time": "2025-04-18 07:31:35.335128+00:00", "ip_address": "127.0.0.1"}
+{"id": 24, "user_id": 5, "login_time": "2025-04-18 07:56:58.593532+00:00", "logout_time": null, "ip_address": "127.0.0.1"}
+{"id": 24, "user_id": 5, "login_time": "2025-04-18 07:56:58.593532+00:00", "logout_time": "2025-04-18 10:09:33.033221+00:00", "ip_address": "127.0.0.1"}
+{"id": 25, "user_id": 1, "login_time": "2025-04-18 10:09:55.056209+00:00", "logout_time": null, "ip_address": "127.0.0.1"}
+{"id": 26, "user_id": 1, "login_time": "2025-04-18 10:16:06.005092+00:00", "logout_time": null, "ip_address": "127.0.0.1"}

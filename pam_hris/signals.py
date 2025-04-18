@@ -2,13 +2,17 @@ import json
 from django.contrib.auth.signals import user_logged_in, user_logged_out
 from django.dispatch import receiver
 from django.utils.timezone import now
-from pam_hris.models import SessionLog
+from .models import SessionLog
 from pathlib import Path
+from .models import User  
 
-LOG_FILE = Path("C:\FinalYearProject\elk\logstash-pipeline\sessionlogs.json")  # must match logstash.conf
+
+# Use raw string for Windows path to avoid escape issues
+LOG_FILE = Path(r"C:\FinalYearProject\elk\logstash-pipeline\sessionlogs.json")
 
 def append_log_to_file(data):
-    with open(LOG_FILE, "a") as f:
+    # Ensure JSON is dumped as one-liner (not pretty-printed)
+    with open(LOG_FILE, "a", encoding="utf-8") as f:
         json.dump(data, f)
         f.write("\n")
 
@@ -19,7 +23,6 @@ def log_login(sender, request, user, **kwargs):
         login_time=now(),
         ip_address=request.META.get('REMOTE_ADDR')
     )
-    # write to file
     append_log_to_file({
         "id": session.id,
         "user_id": user.id,
@@ -35,7 +38,6 @@ def log_user_logout(sender, request, user, **kwargs):
         if not session.logout_time:
             session.logout_time = now()
             session.save()
-            # update file with logout (append as new log)
             append_log_to_file({
                 "id": session.id,
                 "user_id": user.id,

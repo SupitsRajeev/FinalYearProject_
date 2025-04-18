@@ -29,15 +29,13 @@ services:
     image: docker.elastic.co/logstash/logstash:8.17.0
     container_name: logstash
     volumes:
-      - ./logstash-pipeline:/usr/share/logstash/pipeline/
+        -  C:/FinalYearProject/elk/logstash-pipeline:/usr/share/logstash/pipeline
+
     ports:
-      - "5044:5044"  # Used for Beats, optional for now
-      - "9600:9600"  # Optional: Logstash monitoring API
+      - "5044:5044"
     depends_on:
       - elasticsearch
-
     restart: always
-    
     networks:
       - elk
 

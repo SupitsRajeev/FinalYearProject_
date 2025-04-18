@@ -1,0 +1,16 @@
+path.data: C:/FinalYearProject/filebeat/data
+path.logs: C:/FinalYearProject/filebeat/logs
+
+filebeat.inputs:
+  - type: filestream
+    id: session-log-json
+    enabled: true
+    paths:
+      - C:/FinalYearProject/elk/logstash-pipeline/sessionlogs_final.json
+
+    parsers:
+      - ndjson:
+          overwrite_keys: true
+
+output.logstash:
+  hosts: ["172.23.0.3:5044"]

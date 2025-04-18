@@ -287,6 +287,26 @@
   .welcome-card p {
     color: var(--muted-foreground);
   }
+
+  .session-log-section {
+    margin-top: 2rem;
+  }
+  
+  .session-log-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0,0,0,0.05);
+  }
+  
+  .session-log-table th,
+  .session-log-table td {
+    padding: 12px;
+    border: 1px solid #e5e7eb;
+    text-align: left;
+  }
+  
   
   /* Responsive */
   @media (max-width: 768px) {

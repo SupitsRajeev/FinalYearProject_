@@ -3,7 +3,12 @@ from django.contrib.auth.admin import UserAdmin
 from .models import User, UserPriviledge, UserPriviledgeGroup
 from it_management.models import SessionLog
 
-
+@admin.register(SessionLog)
+class SessionLogAdmin(admin.ModelAdmin):
+    list_display = ("user", "login_time", "logout_time", "ip_address")
+    list_filter = ("user", "ip_address")
+    search_fields = ("user__username", "ip_address")
+    ordering = ("-login_time",)
 
 class CustomUserAdmin(UserAdmin):
     model = User
@@ -16,7 +21,9 @@ class CustomUserAdmin(UserAdmin):
 
 
 
+
+
 admin.site.register(User, CustomUserAdmin)
 admin.site.register(UserPriviledge)
 admin.site.register(UserPriviledgeGroup)
-admin.site.register(SessionLog)
+#admin.site.uregister(SessionLog)
