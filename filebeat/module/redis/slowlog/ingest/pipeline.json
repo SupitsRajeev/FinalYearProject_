@@ -1,11 +1,3 @@
-{
-  "description": "Pipeline for parsing redis slowlog logs",
-  "processors": [
-    ],
-  "on_failure" : [{
-    "set" : {
-      "field" : "error.message",
-      "value" : "{{ _ingest.on_failure_message }}"
-    }
-  }]
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:dc2d76c567b6afb1786b348a853b6c5d8b7e58ceb09d0ac83d6d65a59e3fe431
+size 218

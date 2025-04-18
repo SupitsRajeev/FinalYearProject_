@@ -1,32 +1,3 @@
-{
-    "description": "Pipeline for normalizing MISP threat",
-    "processors": [
-      {
-        "set": {
-          "field": "event.ingested",
-          "value": "{{_ingest.timestamp}}"
-        }
-      },
-      {
-        "geoip": {
-          "field": "destination.ip",
-          "target_field": "destination.geo",
-          "ignore_missing": true
-        }
-      },
-      {
-        "geoip": {
-          "field": "source.ip",
-          "target_field": "source.geo",
-          "ignore_missing": true
-        }
-      }
-    ],
-    "on_failure" : [{ 
-      "set" : { 
-        "field" : "error.message", 
-        "value" : "{{ _ingest.on_failure_message }}" 
-      } 
-    }]
-  }
-  
+version https://git-lfs.github.com/spec/v1
+oid sha256:e84b42c476d7327fc792ee63d9a4d4aaa1ef312d9935cb027d390a985f7ba999
+size 675

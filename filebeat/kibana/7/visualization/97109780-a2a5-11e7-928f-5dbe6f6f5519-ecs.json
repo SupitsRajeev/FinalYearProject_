@@ -1,29 +1,3 @@
-{
-    "attributes": {
-        "description": "",
-        "kibanaSavedObjectMeta": {
-            "searchSourceJSON": {}
-        },
-        "title": "Dashboards [Filebeat Nginx] ECS",
-        "uiStateJSON": {},
-        "version": 1,
-        "visState": {
-            "aggs": [],
-            "params": {
-                "fontSize": 12,
-                "markdown": "[Nginx logs overview](#/dashboard/55a9e6e0-a29e-11e7-928f-5dbe6f6f5519-ecs) | [Nginx access and error logs](#/dashboard/046212a0-a2a1-11e7-928f-5dbe6f6f5519-ecs)"
-            },
-            "title": "Dashboards [Filebeat Nginx] ECS",
-            "type": "markdown"
-        }
-    },
-    "coreMigrationVersion": "8.0.0",
-    "id": "97109780-a2a5-11e7-928f-5dbe6f6f5519-ecs",
-    "migrationVersion": {
-        "visualization": "7.14.0"
-    },
-    "references": [],
-    "type": "visualization",
-    "updated_at": "2021-08-04T16:34:19.828Z",
-    "version": "WzQ1MTEsMV0="
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:f121c55046b0c6bb258982c484a018637327d09f9fe9ac78a374a5956e90a7fc
+size 930

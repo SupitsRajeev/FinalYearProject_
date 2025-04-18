@@ -1,16 +1,3 @@
-{
-    "attributes": {
-        "color": "#a548ae",
-        "description": "Tag for indicators ingested by the Threat Intel Filebeat module.",
-        "name": "threat intel"
-    },
-    "coreMigrationVersion": "8.1.0",
-    "id": "d6ef8f20-70a9-11eb-a3e3-b3cc7c78a70f",
-    "migrationVersion": {
-        "tag": "8.0.0"
-    },
-    "references": [],
-    "type": "tag",
-    "updated_at": "2022-02-01T15:45:00.761Z",
-    "version": "WzEwMDMsMV0="
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:008f49f06eabf741fcd668c65e6b694925296a31263dfb5f79cae04fb90bd8bf
+size 440
