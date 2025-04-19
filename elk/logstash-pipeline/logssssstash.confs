@@ -1,0 +1,16 @@
+input {
+  beats {
+    port => 5044
+  }
+
+}
+
+output {
+        elasticsearch {
+            hosts    => "http://localhost:9200"
+            index    => "%{[site_data][name]}-index"
+            #user => "elastic"
+            #password => "FCiYVe_hCGdkvBoE0h76"
+        }
+        stdout { codec => rubydebug }
+}
