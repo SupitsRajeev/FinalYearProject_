@@ -1,16 +1,139 @@
-path.data: C:/FinalYearProject/filebeat/data
-path.logs: C:/FinalYearProject/filebeat/logs
+###################### Filebeat Configuration Example #########################
+# ============================== Filebeat inputs ===============================
 
 filebeat.inputs:
-  - type: filestream
-    id: session-log-json
-    enabled: true
-    paths:
-      - C:/FinalYearProject/elk/logstash-pipeline/sessionlogs_final.json
 
-    parsers:
-      - ndjson:
-          overwrite_keys: true
+#- type: log
 
+  # Change to true to enable this input configuration.
+#  enabled: true
+
+  # Paths that should be crawled and fetched. Glob based paths.
+#  paths:
+#    - /var/www/app/storage/logs/*.log
+#    - /var/log/nginx/*.log
+
+- type: filestream
+
+  # Change to true to enable this input configuration.
+  enabled: true
+
+  # Paths that should be crawled and fetched. Glob based paths.
+  paths:
+    - C:\FinalYEarProject\elk\logstash-pipeline\sessionlogs.json
+
+
+
+
+    #- c:\programdata\elasticsearch\logs\*
+
+  # Exclude lines. A list of regular expressions to match. It drops the lines that are
+  # matching any regular expression from the list.
+  #exclude_lines: ['^DBG']
+
+  # Include lines. A list of regular expressions to match. It exports the lines that are
+  # matching any regular expression from the list.
+  #include_lines: ['^ERR', '^WARN']
+
+  # Exclude files. A list of regular expressions to match. Filebeat drops the files that
+  # are matching any regular expression from the list. By default, no files are dropped.
+  #prospector.scanner.exclude_files: ['/var/log/supervisor/filebeat-stdout*.log']
+
+  # Optional additional fields. These fields can be freely picked
+  # to add additional information to the crawled log files for filtering
+  #fields:
+  #  level: debug
+  #  review: 1
+
+# ============================== Filebeat modules ==============================
+
+filebeat.config.modules:
+  # Glob pattern for configuration loading
+  path: ${path.config}/modules.d/*.yml
+
+  # Set to true to enable config reloading
+  reload.enabled: false
+
+  # Period on which files under path should be checked for changes
+  #reload.period: 10s
+
+# ======================= Elasticsearch template setting =======================
+
+setup.template.settings:
+  index.number_of_shards: 1
+  #index.codec: best_compression
+  #_source.enabled: false
+
+setup.template.name: "admins"
+setup.template.pattern: "admins-*"
+setup.template.append_fields:
+  - name: site.name
+    type: keyword
+  - name: site.hostname
+    type: long
+# ================================== General ===================================
+setup.ilm.enabled: false
+
+# =================================== Kibana ===================================
+
+# setup.kibana:
+  # host: "http://46.246.74.250:5601/"/
+  # username: "elastic"
+  # password: "1y-pQn6XtCeF-iVdrXmt"
+  # Kibana Space ID
+  # ID of the Kibana Space into which the dashboards should be loaded. By default,
+  # the Default Space will be used.
+  #space.id:
+
+# ================================== Outputs ===================================
+
+# Configure what output to use when sending the data collected by the beat.
+
+# ---------------------------- Elasticsearch Output ----------------------------
+#output.elasticsearch:
+# # Array of hosts to connect to.
+#  hosts: ["http://46.246.74.250:9200"]
+#  index: "oauth-%{[agent.version]}"
+#  protocol: "http"
+#
+# # Authentication credentials - either API key or username/password.
+# #api_key: "id:api_key"
+#  username: "elastic"
+#  password: "Hazesoft@123"
+
+# ------------------------------ Logstash Output -------------------------------
 output.logstash:
-  hosts: ["172.23.0.3:5044"]
+  # The Logstash hosts
+  hosts: ["localhost:5044"]
+  # Optional SSL. By default is off.
+  # List of root certificates for HTTPS server verifications
+#  ssl.certificate_authorities: ["/etc/pki/tls/certs/logstash.crt"]
+#  # Certificate for SSL client authentication
+#  ssl.certificate: "/etc/pki/tls/certs/filebeat.crt"
+#  # Client Certificate Key
+#  ssl.key: "/etc/pki/tls/certs/filebeat.key"
+#
+# ================================= Processors =================================
+processors:
+  - add_host_metadata:
+      when.not.contains.tags: forwarded
+  - add_cloud_metadata: ~
+  - add_docker_metadata: ~
+  - add_kubernetes_metadata: ~
+  - add_fields:
+      target: site_data
+      fields:
+        name: test-dev
+        domain_name: test-dev
+
+
+# ================================== Logging ===================================
+
+# Sets log level. The default log level is info.
+# Available log levels are: error, warning, info, debug
+#logging.level: debug
+
+# At debug level, you can selectively enable logging only for some components.
+# To enable all selectors use ["*"]. Examples of other selectors are "beat",
+# "publish", "service".
+#logging.selectors: ["*"]

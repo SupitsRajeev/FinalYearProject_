@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from .models import User, UserPriviledge, UserPriviledgeGroup
-from it_management.models import SessionLog
+from .models import SessionLog
 
 @admin.register(SessionLog)
 class SessionLogAdmin(admin.ModelAdmin):

@@ -9,12 +9,11 @@ class User(AbstractUser):
     password = models.CharField(max_length=128)
     isHr = models.BooleanField(default=False)
     isIt = models.BooleanField(default=False)
-    is_privileged = models.BooleanField(default=False)  # Add this for full PAM access
+    is_privileged = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def save(self, *args, **kwargs):
-        # Automatically mark superusers as privileged
         if self.is_superuser:
             self.is_privileged = True
         super().save(*args, **kwargs)
@@ -25,7 +24,7 @@ class User(AbstractUser):
 
 class UserPriviledgeGroup(models.Model):
     name = models.CharField(max_length=120)
-    role_level = models.IntegerField(unique=True)  # E.g., 1 = Normal, 2 = Manager, 3 = Admin
+    role_level = models.IntegerField(unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -51,6 +50,7 @@ class SessionLog(models.Model):
     login_time = models.DateTimeField(default=now)
     logout_time = models.DateTimeField(null=True, blank=True)
     ip_address = models.GenericIPAddressField(null=True, blank=True)
+    activity = models.CharField(max_length=255, null=True, blank=True)  # ✅ Added
 
     def __str__(self):
-        return f"{self.user.username} - {self.login_time}"
+        return f"{self.user.username} - {self.login_time} - {self.activity}"
