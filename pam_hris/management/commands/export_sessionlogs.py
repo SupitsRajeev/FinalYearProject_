@@ -7,7 +7,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         logs = SessionLog.objects.all().values()
-        with open('elk/logstash-pipeline/sessionlogs.json', 'w') as f:
+        with open('elk/logstash-pipeline/logs/sessionlogs.json', 'w') as f:
             for entry in logs:
                 json.dump(entry, f, default=str)
                 f.write('\n')

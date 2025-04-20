@@ -23,5 +23,10 @@ urlpatterns = [
     path('admin/dashboard/', views.hr_application_view, name='admin_dashboard'),
 
     # No privilege
-    path('no_privilege/', views.no_privilege_fallback, name='no_privilege'),
+    path('manage_users/', views.manage_users_view, name='manage_users'),
+
+
+   path('manage_users/', views.manage_users_view, name='manage_users'),
+    path('toggle_user/<int:user_id>/', views.toggle_user_status, name='toggle_user_status'),
+
 ]

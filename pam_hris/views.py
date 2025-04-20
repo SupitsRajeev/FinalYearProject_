@@ -4,6 +4,10 @@ from .models import UserPriviledge, User, SessionLog
 from hr_management.models import HREmployee, HRSalarySheet
 # from it_management.models import ManagedUser
 from django.contrib.auth import logout
+from django.http import HttpResponseForbidden
+from django.contrib.auth.decorators import user_passes_test
+from django.views.decorators.http import require_POST
+
 
 
 def landing_page(request):
@@ -15,7 +19,12 @@ def login_redirect(request):
     user = request.user
 
     if user.is_superuser:
-        return redirect('hr_application')
+        return render(request, 'partials/base_dashboard.html', {
+            'user': user,
+            'hr_employees': HREmployee.objects.all(),
+            'hr_salaries': HRSalarySheet.objects.all(),
+            'it_sessions': SessionLog.objects.all(),
+        })
 
     try:
         priv = UserPriviledge.objects.get(user=user)
@@ -26,11 +35,12 @@ def login_redirect(request):
         elif role == 2:
             return redirect('it_dashboard')
         elif role == 3:
-            return redirect('hr_application')
+            return redirect('hr_application')  # Optional: adjust if not needed anymore
         else:
             return redirect('no_privilege')
     except UserPriviledge.DoesNotExist:
         return redirect('no_privilege')
+
 
 
 @login_required
@@ -54,7 +64,7 @@ def hr_application_view(request):
         'it_sessions': SessionLog.objects.all() if role in [2, 3] else None,
     }
 
-    return render(request, 'partials/hr_application.html', context)
+    return render(request, 'partials/base_dashboard.html', context)
 
 
 @login_required
@@ -93,3 +103,25 @@ def no_privilege_fallback(request):
 def logout_view(request):
     logout(request)
     return redirect('login')
+
+@login_required
+@user_passes_test(lambda u: u.is_superuser)
+def manage_users_view(request):
+    users = User.objects.exclude(is_superuser=True)  # You can change this if needed
+    return render(request, 'partials/user_management.html', {'users': users})
+
+
+
+@login_required
+@user_passes_test(lambda u: u.is_superuser)
+@require_POST
+def toggle_user_status(request, user_id):
+    try:
+        user = User.objects.get(pk=user_id)
+        if user.is_superuser:
+            return HttpResponseForbidden("Cannot deactivate superuser.")
+        user.is_active = not user.is_active
+        user.save()
+    except User.DoesNotExist:
+        pass
+    return redirect('manage_users')

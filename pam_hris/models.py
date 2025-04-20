@@ -50,7 +50,7 @@ class SessionLog(models.Model):
     login_time = models.DateTimeField(default=now)
     logout_time = models.DateTimeField(null=True, blank=True)
     ip_address = models.GenericIPAddressField(null=True, blank=True)
-    activity = models.CharField(max_length=255, null=True, blank=True)  # ✅ Added
+    activity = models.CharField(max_length=255, null=True, blank=True)  #  Added to track admin actions
 
     def __str__(self):
-        return f"{self.user.username} - {self.login_time} - {self.activity}"
+        return f"{self.user.username} - {self.login_time} - {self.activity or 'Session'}"

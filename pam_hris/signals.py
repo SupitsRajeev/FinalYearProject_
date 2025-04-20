@@ -8,7 +8,7 @@ from .models import User
 
 
 # Use raw string for Windows path to avoid escape issues
-LOG_FILE = Path(r"C:\FinalYearProject\elk\logstash-pipeline\sessionlogs.json")
+LOG_FILE = Path(r"C:/FinalYearProject/elk/logstash-pipeline/logs/sessionlogs.json")
 
 def append_log_to_file(data):
     # Ensure JSON is dumped as one-liner (not pretty-printed)

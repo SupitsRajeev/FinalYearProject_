@@ -51,8 +51,7 @@ services:
   
     volumes:
       - ./logstash-pipeline/filebeat.yml:/usr/share/filebeat/filebeat.yml
-      - ./logstash-pipeline/hello.log:/var/lib/docker/containers/hello.log
-      - /var/run/docker.sock:/var/run/docker.sock
+      - ./logstash-pipeline/logs:/logs
     depends_on:
       - logstash
 
