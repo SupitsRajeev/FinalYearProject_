@@ -2,10 +2,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dashboard</title>
-  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}" />
   <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
@@ -18,7 +18,7 @@
           <span>GuardMyAnamolies</span>
         </div>
       </div>
-      
+
       <div class="sidebar-content">
         <!-- Departments -->
         <div class="sidebar-group">
@@ -86,7 +86,7 @@
           </button>
           <h1>Dashboard</h1>
         </div>
-        
+
         <div class="header-right">
           <div class="user-dropdown">
             <button class="user-dropdown-button">
@@ -97,9 +97,9 @@
               <i data-lucide="chevron-down"></i>
             </button>
             <div class="dropdown-menu">
-              <form method="post" action="{% url 'logout' %}" style="margin: 0;">
+              <form id="logoutForm" method="post" action="{% url 'logout' %}" style="margin: 0;">
                 {% csrf_token %}
-                <button type="submit" class="dropdown-item" style="background: none; border: none; width: 100%; text-align: left;">
+                <button type="submit" class="dropdown-item" style="background: none; border: none; width: 100%; text-align: left; cursor: pointer;">
                   <i data-lucide="log-out"></i>
                   <span>Logout</span>
                 </button>
@@ -121,213 +121,17 @@
   <script>
     lucide.createIcons();
 
-    document.getElementById('sidebarToggle').addEventListener('click', function() {
+    document.getElementById('sidebarToggle').addEventListener('click', function () {
       document.querySelector('.sidebar').classList.toggle('collapsed');
       document.querySelector('.main-content').classList.toggle('expanded');
     });
 
-    document.querySelector('.user-dropdown-button').addEventListener('click', function(e) {
+    document.querySelector('.user-dropdown-button').addEventListener('click', function (e) {
       e.stopPropagation();
       document.querySelector('.dropdown-menu').classList.toggle('show');
     });
 
-    document.addEventListener('click', function() {
-      document.querySelector('.dropdown-menu').classList.remove('show');
-    });
-  </script>
-</body>
-</html>
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Dashboard</title>
-  <link rel="stylesheet" href="{% static 'css/style.css' %}">
-  <script src="https://unpkg.com/lucide@latest"></script>
-</head>
-<body>
-  <div class="dashboard-container">
-    <!-- Sidebar -->
-    <aside class="sidebar">
-      <div class="sidebar-header">
-        <div class="logo">
-          <i data-lucide="bar-chart-3"></i>
-          <span>GuardMyAnamolies</span>
-        </div>
-      </div>
-      
-      <div class="sidebar-content">
-        <!-- Departments -->
-        <div class="sidebar-group">
-          <div class="sidebar-group-label">Departments</div>
-          <div class="sidebar-group-content">
-            <ul class="sidebar-menu">
-              <li class="sidebar-menu-item">
-                <a href="#" class="sidebar-menu-button">
-                  <i data-lucide="computer"></i>
-                  <span>IT</span>
-                </a>
-              </li>
-              <li class="sidebar-menu-item">
-                <a href="#" class="sidebar-menu-button">
-                  <i data-lucide="building-2"></i>
-                  <span>HR</span>
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        <!-- Management -->
-        <div class="sidebar-group">
-          <div class="sidebar-group-label">Management</div>
-          <div class="sidebar-group-content">
-            <ul class="sidebar-menu">
-              <li class="sidebar-menu-item">
-                <a href="#" class="sidebar-menu-button">
-                  <i data-lucide="monitor-check"></i>
-                  <span>Session Monitoring</span>
-                </a>
-              </li>
-              <li class="sidebar-menu-item">
-                <a href="{% url 'manage_users' %}" class="sidebar-menu-button">
-                  <i data-lucide="users"></i>
-                  <span>User Management</span>
-                </a>
-              </li>
-              <li class="sidebar-menu-item">
-                <a href="#" class="sidebar-menu-button">
-                  <i data-lucide="user"></i>
-                  <span>Employee</span>
-                </a>
-              </li>
-              <li class="sidebar-menu-item">
-                <a href="#" class="sidebar-menu-button">
-                  <i data-lucide="user"></i>
-                  <span>Salary Sheet</span>
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </aside>
-
-    <!-- Main Content -->
-    <div class="main-content">
-      <!-- Header -->
-      <header class="header">
-        <div class="header-left">
-          <button class="sidebar-toggle" id="sidebarToggle">
-            <i data-lucide="menu"></i>
-          </button>
-          <h1>Admin Dashboard</h1>
-        </div>
-        
-        <div class="header-right">
-          <div class="user-dropdown">
-            <button class="user-dropdown-button">
-              <div class="avatar">
-                <span>{{ user.name|slice:":2"|upper }}</span>
-              </div>
-              <span>{{ user.name|default:user.username }}</span>
-              <i data-lucide="chevron-down"></i>
-            </button>
-            <div class="dropdown-menu">
-              <form method="post" action="{% url 'logout' %}" style="margin: 0;">
-                {% csrf_token %}
-                <button type="submit" class="dropdown-item" style="background: none; border: none; width: 100%; text-align: left;">
-                  <i data-lucide="log-out"></i>
-                  <span>Logout</span>
-                </button>
-              </form>
-            </div>
-          </div>
-        </div>
-      </header>
-
-      <!-- Unified Admin Content -->
-      <main class="content">
-        <div class="welcome-card">
-          <h2>Welcome Admin</h2>
-          <p>This dashboard shows both HR and IT department data.</p>
-        </div>
-
-        <!-- HR Employees -->
-        <section class="mt-4">
-          <h3>HR Employees</h3>
-          <ul>
-            {% for emp in hr_employees %}
-              <li>{{ emp.name }} – {{ emp.role }}</li>
-            {% empty %}
-              <li>No employees found.</li>
-            {% endfor %}
-          </ul>
-        </section>
-
-        <!-- Salary Sheet -->
-        <section class="mt-4">
-          <h3>Salary Sheet</h3>
-          <table>
-            <thead>
-              <tr><th>Employee</th><th>Month</th><th>Amount</th><th>Status</th></tr>
-            </thead>
-            <tbody>
-              {% for sheet in hr_salaries %}
-                <tr>
-                  <td>{{ sheet.employee.name }}</td>
-                  <td>{{ sheet.month }}</td>
-                  <td>{{ sheet.salary }}</td>
-                  <td>{{ sheet.is_paid|yesno:"Paid,Unpaid" }}</td>
-                </tr>
-              {% empty %}
-                <tr><td colspan="4">No salary data.</td></tr>
-              {% endfor %}
-            </tbody>
-          </table>
-        </section>
-
-        <!-- Session Logs -->
-        <section class="mt-4">
-          <h3>IT Session Logs</h3>
-          <table>
-            <thead>
-              <tr><th>User</th><th>Login Time</th><th>Logout Time</th><th>IP Address</th></tr>
-            </thead>
-            <tbody>
-              {% for log in it_sessions %}
-                <tr>
-                  <td>{{ log.user.username }}</td>
-                  <td>{{ log.login_time }}</td>
-                  <td>{{ log.logout_time|default:"Active" }}</td>
-                  <td>{{ log.ip_address|default:"N/A" }}</td>
-                </tr>
-              {% empty %}
-                <tr><td colspan="4">No session logs found.</td></tr>
-              {% endfor %}
-            </tbody>
-          </table>
-        </section>
-      </main>
-    </div>
-  </div>
-
-  <script>
-    lucide.createIcons();
-
-    document.getElementById('sidebarToggle').addEventListener('click', function() {
-      document.querySelector('.sidebar').classList.toggle('collapsed');
-      document.querySelector('.main-content').classList.toggle('expanded');
-    });
-
-    document.querySelector('.user-dropdown-button').addEventListener('click', function(e) {
-      e.stopPropagation();
-      document.querySelector('.dropdown-menu').classList.toggle('show');
-    });
-
-    document.addEventListener('click', function() {
+    document.addEventListener('click', function () {
       document.querySelector('.dropdown-menu').classList.remove('show');
     });
   </script>

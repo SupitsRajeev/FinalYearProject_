@@ -92,7 +92,7 @@ def it_dashboard_view(request):
         'it_users': None,  # ← Placeholder, since ManagedUser is commented
         'it_sessions': SessionLog.objects.all(),
     }
-    return render(request, 'dashboards/it_dashboard.html', context)  # ✅ Fixed render
+    return render(request, 'dashboards/it_dashboard.html', context)  
 
 
 @login_required

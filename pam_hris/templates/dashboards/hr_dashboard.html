@@ -1,5 +1,1180 @@
-{% extends "base_dashboard.html" %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HR Management Dashboard</title>
+  <link rel="stylesheet" href="{% static 'css/hr.css' %}">
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+  <div class="dashboard-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo">
+          <i data-lucide="building-2"></i>
+          <span>HR Management</span>
+        </div>
+      </div>
+      
+      <div class="sidebar-content">
+        <!-- Dashboard -->
+        <div class="sidebar-group">
+          <div class="sidebar-group-label">Dashboard</div>
+          <div class="sidebar-group-content">
+            <ul class="sidebar-menu">
+              <li class="sidebar-menu-item active">
+                <a href="#" class="sidebar-menu-button" data-page="dashboard">
+                  <i data-lucide="layout-dashboard"></i>
+                  <span>Overview</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
 
-{% block content %}
-<!-- content like welcome message or session logs -->
-{% endblock %}
+        <!-- HR Management -->
+        <div class="sidebar-group">
+          <div class="sidebar-group-label">HR Management</div>
+          <div class="sidebar-group-content">
+            <ul class="sidebar-menu">
+              <li class="sidebar-menu-item">
+                <a href="#" class="sidebar-menu-button" data-page="employees">
+                  <i data-lucide="users"></i>
+                  <span>Employees</span>
+                </a>
+              </li>
+              <li class="sidebar-menu-item">
+                <a href="#" class="sidebar-menu-button" data-page="salary">
+                  <i data-lucide="receipt"></i>
+                  <span>Salary Sheets</span>
+                </a>
+              </li>
+              <li class="sidebar-menu-item">
+                <a href="#" class="sidebar-menu-button" data-page="attendance">
+                  <i data-lucide="calendar-check"></i>
+                  <span>Attendance</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Settings -->
+        <div class="sidebar-group">
+          <div class="sidebar-group-label">Settings</div>
+          <div class="sidebar-group-content">
+            <ul class="sidebar-menu">
+              <li class="sidebar-menu-item">
+                <a href="#" class="sidebar-menu-button" data-page="profile">
+                  <i data-lucide="user-cog"></i>
+                  <span>Profile</span>
+                </a>
+              </li>
+              <li class="sidebar-menu-item">
+                <a href="#" class="sidebar-menu-button" data-page="settings">
+                  <i data-lucide="settings"></i>
+                  <span>Settings</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <!-- Header -->
+      <header class="header">
+        <div class="header-left">
+          <button class="sidebar-toggle" id="sidebarToggle">
+            <i data-lucide="menu"></i>
+          </button>
+          <h1>HR Dashboard</h1>
+        </div>
+        
+        <div class="header-right">
+          <div class="search-container">
+            <i data-lucide="search"></i>
+            <input type="text" placeholder="Search..." class="search-input">
+          </div>
+          <button class="notification-btn">
+            <i data-lucide="bell"></i>
+            <span class="notification-badge">3</span>
+          </button>
+          <div class="user-dropdown">
+            <button class="user-dropdown-button">
+              <div class="avatar">
+                <span>HR</span>
+              </div>
+              <span>HR Manager</span>
+              <i data-lucide="chevron-down"></i>
+            </button>
+            <div class="dropdown-menu">
+              <a href="#" class="dropdown-item">
+                <i data-lucide="user"></i>
+                <span>Profile</span>
+              </a>
+              <a href="#" class="dropdown-item">
+                <i data-lucide="settings"></i>
+                <span>Settings</span>
+              </a>
+              <hr class="dropdown-divider">
+              <a href="#" class="dropdown-item">
+                <i data-lucide="log-out"></i>
+                <span>Logout</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Dashboard Content -->
+      <main class="content">
+        <!-- Dashboard Overview Page -->
+        <div class="page active" id="dashboard-page">
+          <div class="dashboard-stats">
+            <div class="stat-card">
+              <div class="stat-icon">
+                <i data-lucide="users"></i>
+              </div>
+              <div class="stat-details">
+                <h3>Total Employees</h3>
+                <p class="stat-value">124</p>
+                <p class="stat-change positive">+4 this month</p>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon">
+                <i data-lucide="user-check"></i>
+              </div>
+              <div class="stat-details">
+                <h3>Active Employees</h3>
+                <p class="stat-value">118</p>
+                <p class="stat-change">96% of total</p>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon">
+                <i data-lucide="calendar-x"></i>
+              </div>
+              <div class="stat-details">
+                <h3>On Leave</h3>
+                <p class="stat-value">6</p>
+                <p class="stat-change negative">+2 from last week</p>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon">
+                <i data-lucide="receipt"></i>
+              </div>
+              <div class="stat-details">
+                <h3>Pending Salaries</h3>
+                <p class="stat-value">12</p>
+                <p class="stat-change">Due in 3 days</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="dashboard-row">
+            <div class="dashboard-card wide">
+              <div class="card-header">
+                <h3>Department Distribution</h3>
+                <div class="card-actions">
+                  <button class="card-action-btn">
+                    <i data-lucide="more-horizontal"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="card-body">
+                <div class="department-chart">
+                  <div class="chart-bar">
+                    <div class="bar-label">IT</div>
+                    <div class="bar-container">
+                      <div class="bar" style="width: 65%;"></div>
+                      <span class="bar-value">42</span>
+                    </div>
+                  </div>
+                  <div class="chart-bar">
+                    <div class="bar-label">Marketing</div>
+                    <div class="bar-container">
+                      <div class="bar" style="width: 45%;"></div>
+                      <span class="bar-value">28</span>
+                    </div>
+                  </div>
+                  <div class="chart-bar">
+                    <div class="bar-label">Sales</div>
+                    <div class="bar-container">
+                      <div class="bar" style="width: 35%;"></div>
+                      <span class="bar-value">22</span>
+                    </div>
+                  </div>
+                  <div class="chart-bar">
+                    <div class="bar-label">Finance</div>
+                    <div class="bar-container">
+                      <div class="bar" style="width: 25%;"></div>
+                      <span class="bar-value">16</span>
+                    </div>
+                  </div>
+                  <div class="chart-bar">
+                    <div class="bar-label">HR</div>
+                    <div class="bar-container">
+                      <div class="bar" style="width: 15%;"></div>
+                      <span class="bar-value">10</span>
+                    </div>
+                  </div>
+                  <div class="chart-bar">
+                    <div class="bar-label">Operations</div>
+                    <div class="bar-container">
+                      <div class="bar" style="width: 10%;"></div>
+                      <span class="bar-value">6</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="dashboard-card">
+              <div class="card-header">
+                <h3>Recent Activities</h3>
+                <div class="card-actions">
+                  <button class="card-action-btn">
+                    <i data-lucide="more-horizontal"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="card-body">
+                <ul class="activity-list">
+                  <li class="activity-item">
+                    <div class="activity-icon">
+                      <i data-lucide="user-plus"></i>
+                    </div>
+                    <div class="activity-details">
+                      <p>New employee <strong>John Smith</strong> added</p>
+                      <span class="activity-time">2 hours ago</span>
+                    </div>
+                  </li>
+                  <li class="activity-item">
+                    <div class="activity-icon">
+                      <i data-lucide="receipt"></i>
+                    </div>
+                    <div class="activity-details">
+                      <p>Salary for <strong>Marketing</strong> processed</p>
+                      <span class="activity-time">Yesterday</span>
+                    </div>
+                  </li>
+                  <li class="activity-item">
+                    <div class="activity-icon">
+                      <i data-lucide="calendar"></i>
+                    </div>
+                    <div class="activity-details">
+                      <p><strong>Sarah Johnson</strong> requested leave</p>
+                      <span class="activity-time">2 days ago</span>
+                    </div>
+                  </li>
+                  <li class="activity-item">
+                    <div class="activity-icon">
+                      <i data-lucide="user-minus"></i>
+                    </div>
+                    <div class="activity-details">
+                      <p><strong>Michael Brown</strong> resigned</p>
+                      <span class="activity-time">1 week ago</span>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="dashboard-row">
+            <div class="dashboard-card">
+              <div class="card-header">
+                <h3>Upcoming Birthdays</h3>
+                <div class="card-actions">
+                  <button class="card-action-btn">
+                    <i data-lucide="more-horizontal"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="card-body">
+                <ul class="birthday-list">
+                  <li class="birthday-item">
+                    <div class="avatar">
+                      <span>JS</span>
+                    </div>
+                    <div class="birthday-details">
+                      <p>John Smith</p>
+                      <span>May 15 (Tomorrow)</span>
+                    </div>
+                  </li>
+                  <li class="birthday-item">
+                    <div class="avatar">
+                      <span>AJ</span>
+                    </div>
+                    <div class="birthday-details">
+                      <p>Alice Johnson</p>
+                      <span>May 18 (4 days)</span>
+                    </div>
+                  </li>
+                  <li class="birthday-item">
+                    <div class="avatar">
+                      <span>RD</span>
+                    </div>
+                    <div class="birthday-details">
+                      <p>Robert Davis</p>
+                      <span>May 23 (9 days)</span>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="dashboard-card">
+              <div class="card-header">
+                <h3>Announcements</h3>
+                <div class="card-actions">
+                  <button class="card-action-btn">
+                    <i data-lucide="more-horizontal"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="card-body">
+                <ul class="announcement-list">
+                  <li class="announcement-item">
+                    <h4>Company Picnic</h4>
+                    <p>Annual company picnic scheduled for June 15th at Central Park.</p>
+                    <span class="announcement-date">Posted: May 10</span>
+                  </li>
+                  <li class="announcement-item">
+                    <h4>New Health Benefits</h4>
+                    <p>Updated health benefits package available starting next month.</p>
+                    <span class="announcement-date">Posted: May 5</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Employees Page -->
+        <div class="page" id="employees-page">
+          <div class="page-header">
+            <h2>Employee Management</h2>
+            <div class="page-actions">
+              <div class="search-container">
+                <i data-lucide="search"></i>
+                <input type="text" placeholder="Search employees..." class="search-input" id="employee-search">
+              </div>
+              <div class="filter-container">
+                <select id="department-filter">
+                  <option value="">All Departments</option>
+                  <option value="IT">IT</option>
+                  <option value="Marketing">Marketing</option>
+                  <option value="Sales">Sales</option>
+                  <option value="Finance">Finance</option>
+                  <option value="HR">HR</option>
+                  <option value="Operations">Operations</option>
+                </select>
+              </div>
+              <button class="primary-btn">
+                <i data-lucide="plus"></i>
+                Add Employee
+              </button>
+            </div>
+          </div>
+          
+          <div class="employee-grid">
+            <div class="employee-card">
+              <div class="employee-header">
+                <div class="employee-avatar">
+                  <span>JS</span>
+                </div>
+                <div class="employee-actions">
+                  <button class="action-btn">
+                    <i data-lucide="more-vertical"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="employee-details">
+                <h3>John Smith</h3>
+                <p class="employee-title">Senior Developer</p>
+                <p class="employee-department">IT Department</p>
+              </div>
+              <div class="employee-contact">
+                <div class="contact-item">
+                  <i data-lucide="mail"></i>
+                  <span>john.smith@company.com</span>
+                </div>
+                <div class="contact-item">
+                  <i data-lucide="phone"></i>
+                  <span>+1 (555) 123-4567</span>
+                </div>
+              </div>
+              <div class="employee-footer">
+                <button class="outline-btn">View Profile</button>
+                <button class="outline-btn">Edit</button>
+              </div>
+            </div>
+
+            <div class="employee-card">
+              <div class="employee-header">
+                <div class="employee-avatar">
+                  <span>SJ</span>
+                </div>
+                <div class="employee-actions">
+                  <button class="action-btn">
+                    <i data-lucide="more-vertical"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="employee-details">
+                <h3>Sarah Johnson</h3>
+                <p class="employee-title">Marketing Manager</p>
+                <p class="employee-department">Marketing Department</p>
+              </div>
+              <div class="employee-contact">
+                <div class="contact-item">
+                  <i data-lucide="mail"></i>
+                  <span>sarah.j@company.com</span>
+                </div>
+                <div class="contact-item">
+                  <i data-lucide="phone"></i>
+                  <span>+1 (555) 987-6543</span>
+                </div>
+              </div>
+              <div class="employee-footer">
+                <button class="outline-btn">View Profile</button>
+                <button class="outline-btn">Edit</button>
+              </div>
+            </div>
+
+            <div class="employee-card">
+              <div class="employee-header">
+                <div class="employee-avatar">
+                  <span>RD</span>
+                </div>
+                <div class="employee-actions">
+                  <button class="action-btn">
+                    <i data-lucide="more-vertical"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="employee-details">
+                <h3>Robert Davis</h3>
+                <p class="employee-title">Sales Representative</p>
+                <p class="employee-department">Sales Department</p>
+              </div>
+              <div class="employee-contact">
+                <div class="contact-item">
+                  <i data-lucide="mail"></i>
+                  <span>robert.d@company.com</span>
+                </div>
+                <div class="contact-item">
+                  <i data-lucide="phone"></i>
+                  <span>+1 (555) 456-7890</span>
+                </div>
+              </div>
+              <div class="employee-footer">
+                <button class="outline-btn">View Profile</button>
+                <button class="outline-btn">Edit</button>
+              </div>
+            </div>
+
+            <div class="employee-card">
+              <div class="employee-header">
+                <div class="employee-avatar">
+                  <span>AJ</span>
+                </div>
+                <div class="employee-actions">
+                  <button class="action-btn">
+                    <i data-lucide="more-vertical"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="employee-details">
+                <h3>Alice Johnson</h3>
+                <p class="employee-title">Financial Analyst</p>
+                <p class="employee-department">Finance Department</p>
+              </div>
+              <div class="employee-contact">
+                <div class="contact-item">
+                  <i data-lucide="mail"></i>
+                  <span>alice.j@company.com</span>
+                </div>
+                <div class="contact-item">
+                  <i data-lucide="phone"></i>
+                  <span>+1 (555) 234-5678</span>
+                </div>
+              </div>
+              <div class="employee-footer">
+                <button class="outline-btn">View Profile</button>
+                <button class="outline-btn">Edit</button>
+              </div>
+            </div>
+
+            <div class="employee-card">
+              <div class="employee-header">
+                <div class="employee-avatar">
+                  <span>MB</span>
+                </div>
+                <div class="employee-actions">
+                  <button class="action-btn">
+                    <i data-lucide="more-vertical"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="employee-details">
+                <h3>Michael Brown</h3>
+                <p class="employee-title">HR Specialist</p>
+                <p class="employee-department">HR Department</p>
+              </div>
+              <div class="employee-contact">
+                <div class="contact-item">
+                  <i data-lucide="mail"></i>
+                  <span>michael.b@company.com</span>
+                </div>
+                <div class="contact-item">
+                  <i data-lucide="phone"></i>
+                  <span>+1 (555) 876-5432</span>
+                </div>
+              </div>
+              <div class="employee-footer">
+                <button class="outline-btn">View Profile</button>
+                <button class="outline-btn">Edit</button>
+              </div>
+            </div>
+
+            <div class="employee-card">
+              <div class="employee-header">
+                <div class="employee-avatar">
+                  <span>EW</span>
+                </div>
+                <div class="employee-actions">
+                  <button class="action-btn">
+                    <i data-lucide="more-vertical"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="employee-details">
+                <h3>Emily Wilson</h3>
+                <p class="employee-title">Operations Manager</p>
+                <p class="employee-department">Operations Department</p>
+              </div>
+              <div class="employee-contact">
+                <div class="contact-item">
+                  <i data-lucide="mail"></i>
+                  <span>emily.w@company.com</span>
+                </div>
+                <div class="contact-item">
+                  <i data-lucide="phone"></i>
+                  <span>+1 (555) 345-6789</span>
+                </div>
+              </div>
+              <div class="employee-footer">
+                <button class="outline-btn">View Profile</button>
+                <button class="outline-btn">Edit</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="pagination">
+            <button class="pagination-btn" disabled>
+              <i data-lucide="chevron-left"></i>
+            </button>
+            <button class="pagination-btn active">1</button>
+            <button class="pagination-btn">2</button>
+            <button class="pagination-btn">3</button>
+            <button class="pagination-btn">
+              <i data-lucide="chevron-right"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Salary Sheet Page -->
+        <div class="page" id="salary-page">
+          <div class="page-header">
+            <h2>Salary Sheets</h2>
+            <div class="page-actions">
+              <div class="filter-container">
+                <select id="month-filter">
+                  <option value="May 2023">May 2023</option>
+                  <option value="April 2023">April 2023</option>
+                  <option value="March 2023">March 2023</option>
+                  <option value="February 2023">February 2023</option>
+                  <option value="January 2023">January 2023</option>
+                </select>
+              </div>
+              <div class="filter-container">
+                <select id="status-filter">
+                  <option value="">All Status</option>
+                  <option value="Paid">Paid</option>
+                  <option value="Pending">Pending</option>
+                </select>
+              </div>
+              <button class="primary-btn">
+                <i data-lucide="download"></i>
+                Export
+              </button>
+            </div>
+          </div>
+          
+          <div class="table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>
+                    <div class="th-content">
+                      <span>Employee</span>
+                      <i data-lucide="arrow-down-up" class="sort-icon"></i>
+                    </div>
+                  </th>
+                  <th>
+                    <div class="th-content">
+                      <span>Employee ID</span>
+                      <i data-lucide="arrow-down-up" class="sort-icon"></i>
+                    </div>
+                  </th>
+                  <th>
+                    <div class="th-content">
+                      <span>Department</span>
+                      <i data-lucide="arrow-down-up" class="sort-icon"></i>
+                    </div>
+                  </th>
+                  <th>
+                    <div class="th-content">
+                      <span>Basic Salary</span>
+                      <i data-lucide="arrow-down-up" class="sort-icon"></i>
+                    </div>
+                  </th>
+                  <th>
+                    <div class="th-content">
+                      <span>Allowances</span>
+                      <i data-lucide="arrow-down-up" class="sort-icon"></i>
+                    </div>
+                  </th>
+                  <th>
+                    <div class="th-content">
+                      <span>Deductions</span>
+                      <i data-lucide="arrow-down-up" class="sort-icon"></i>
+                    </div>
+                  </th>
+                  <th>
+                    <div class="th-content">
+                      <span>Net Salary</span>
+                      <i data-lucide="arrow-down-up" class="sort-icon"></i>
+                    </div>
+                  </th>
+                  <th>
+                    <div class="th-content">
+                      <span>Status</span>
+                      <i data-lucide="arrow-down-up" class="sort-icon"></i>
+                    </div>
+                  </th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <div class="employee-cell">
+                      <div class="avatar small">
+                        <span>JS</span>
+                      </div>
+                      <span>John Smith</span>
+                    </div>
+                  </td>
+                  <td>EMP001</td>
+                  <td>IT</td>
+                  <td>$5,000</td>
+                  <td>$800</td>
+                  <td>$650</td>
+                  <td>$5,150</td>
+                  <td><span class="status-badge paid">Paid</span></td>
+                  <td>
+                    <div class="action-buttons">
+                      <button class="icon-btn">
+                        <i data-lucide="eye"></i>
+                      </button>
+                      <button class="icon-btn">
+                        <i data-lucide="download"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="employee-cell">
+                      <div class="avatar small">
+                        <span>SJ</span>
+                      </div>
+                      <span>Sarah Johnson</span>
+                    </div>
+                  </td>
+                  <td>EMP002</td>
+                  <td>Marketing</td>
+                  <td>$4,500</td>
+                  <td>$700</td>
+                  <td>$600</td>
+                  <td>$4,600</td>
+                  <td><span class="status-badge paid">Paid</span></td>
+                  <td>
+                    <div class="action-buttons">
+                      <button class="icon-btn">
+                        <i data-lucide="eye"></i>
+                      </button>
+                      <button class="icon-btn">
+                        <i data-lucide="download"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="employee-cell">
+                      <div class="avatar small">
+                        <span>RD</span>
+                      </div>
+                      <span>Robert Davis</span>
+                    </div>
+                  </td>
+                  <td>EMP003</td>
+                  <td>Sales</td>
+                  <td>$4,200</td>
+                  <td>$1,200</td>
+                  <td>$580</td>
+                  <td>$4,820</td>
+                  <td><span class="status-badge paid">Paid</span></td>
+                  <td>
+                    <div class="action-buttons">
+                      <button class="icon-btn">
+                        <i data-lucide="eye"></i>
+                      </button>
+                      <button class="icon-btn">
+                        <i data-lucide="download"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="employee-cell">
+                      <div class="avatar small">
+                        <span>AJ</span>
+                      </div>
+                      <span>Alice Johnson</span>
+                    </div>
+                  </td>
+                  <td>EMP004</td>
+                  <td>Finance</td>
+                  <td>$4,800</td>
+                  <td>$600</td>
+                  <td>$620</td>
+                  <td>$4,780</td>
+                  <td><span class="status-badge pending">Pending</span></td>
+                  <td>
+                    <div class="action-buttons">
+                      <button class="icon-btn">
+                        <i data-lucide="eye"></i>
+                      </button>
+                      <button class="icon-btn">
+                        <i data-lucide="download"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="employee-cell">
+                      <div class="avatar small">
+                        <span>MB</span>
+                      </div>
+                      <span>Michael Brown</span>
+                    </div>
+                  </td>
+                  <td>EMP005</td>
+                  <td>HR</td>
+                  <td>$4,300</td>
+                  <td>$500</td>
+                  <td>$550</td>
+                  <td>$4,250</td>
+                  <td><span class="status-badge pending">Pending</span></td>
+                  <td>
+                    <div class="action-buttons">
+                      <button class="icon-btn">
+                        <i data-lucide="eye"></i>
+                      </button>
+                      <button class="icon-btn">
+                        <i data-lucide="download"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="employee-cell">
+                      <div class="avatar small">
+                        <span>EW</span>
+                      </div>
+                      <span>Emily Wilson</span>
+                    </div>
+                  </td>
+                  <td>EMP006</td>
+                  <td>Operations</td>
+                  <td>$4,100</td>
+                  <td>$450</td>
+                  <td>$530</td>
+                  <td>$4,020</td>
+                  <td><span class="status-badge pending">Pending</span></td>
+                  <td>
+                    <div class="action-buttons">
+                      <button class="icon-btn">
+                        <i data-lucide="eye"></i>
+                      </button>
+                      <button class="icon-btn">
+                        <i data-lucide="download"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="pagination">
+            <button class="pagination-btn" disabled>
+              <i data-lucide="chevron-left"></i>
+            </button>
+            <button class="pagination-btn active">1</button>
+            <button class="pagination-btn">2</button>
+            <button class="pagination-btn">3</button>
+            <button class="pagination-btn">
+              <i data-lucide="chevron-right"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Attendance Page -->
+        <div class="page" id="attendance-page">
+          <div class="page-header">
+            <h2>Attendance Management</h2>
+            <div class="page-actions">
+              <div class="filter-container">
+                <select id="attendance-month">
+                  <option value="May 2023">May 2023</option>
+                  <option value="April 2023">April 2023</option>
+                  <option value="March 2023">March 2023</option>
+                </select>
+              </div>
+              <div class="filter-container">
+                <select id="attendance-department">
+                  <option value="">All Departments</option>
+                  <option value="IT">IT</option>
+                  <option value="Marketing">Marketing</option>
+                  <option value="Sales">Sales</option>
+                  <option value="Finance">Finance</option>
+                  <option value="HR">HR</option>
+                  <option value="Operations">Operations</option>
+                </select>
+              </div>
+              <button class="primary-btn">
+                <i data-lucide="download"></i>
+                Export
+              </button>
+            </div>
+          </div>
+          
+          <div class="table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>
+                    <div class="th-content">
+                      <span>Employee</span>
+                      <i data-lucide="arrow-down-up" class="sort-icon"></i>
+                    </div>
+                  </th>
+                  <th>
+                    <div class="th-content">
+                      <span>Department</span>
+                      <i data-lucide="arrow-down-up" class="sort-icon"></i>
+                    </div>
+                  </th>
+                  <th>
+                    <div class="th-content">
+                      <span>Present Days</span>
+                      <i data-lucide="arrow-down-up" class="sort-icon"></i>
+                    </div>
+                  </th>
+                  <th>
+                    <div class="th-content">
+                      <span>Absent Days</span>
+                      <i data-lucide="arrow-down-up" class="sort-icon"></i>
+                    </div>
+                  </th>
+                  <th>
+                    <div class="th-content">
+                      <span>Leave Days</span>
+                      <i data-lucide="arrow-down-up" class="sort-icon"></i>
+                    </div>
+                  </th>
+                  <th>
+                    <div class="th-content">
+                      <span>Late Days</span>
+                      <i data-lucide="arrow-down-up" class="sort-icon"></i>
+                    </div>
+                  </th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <div class="employee-cell">
+                      <div class="avatar small">
+                        <span>JS</span>
+                      </div>
+                      <span>John Smith</span>
+                    </div>
+                  </td>
+                  <td>IT</td>
+                  <td>21</td>
+                  <td>0</td>
+                  <td>1</td>
+                  <td>2</td>
+                  <td>
+                    <div class="action-buttons">
+                      <button class="icon-btn">
+                        <i data-lucide="eye"></i>
+                      </button>
+                      <button class="icon-btn">
+                        <i data-lucide="edit"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="employee-cell">
+                      <div class="avatar small">
+                        <span>SJ</span>
+                      </div>
+                      <span>Sarah Johnson</span>
+                    </div>
+                  </td>
+                  <td>Marketing</td>
+                  <td>20</td>
+                  <td>1</td>
+                  <td>1</td>
+                  <td>0</td>
+                  <td>
+                    <div class="action-buttons">
+                      <button class="icon-btn">
+                        <i data-lucide="eye"></i>
+                      </button>
+                      <button class="icon-btn">
+                        <i data-lucide="edit"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="employee-cell">
+                      <div class="avatar small">
+                        <span>RD</span>
+                      </div>
+                      <span>Robert Davis</span>
+                    </div>
+                  </td>
+                  <td>Sales</td>
+                  <td>22</td>
+                  <td>0</td>
+                  <td>0</td>
+                  <td>1</td>
+                  <td>
+                    <div class="action-buttons">
+                      <button class="icon-btn">
+                        <i data-lucide="eye"></i>
+                      </button>
+                      <button class="icon-btn">
+                        <i data-lucide="edit"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Profile Page -->
+        <div class="page" id="profile-page">
+          <div class="profile-container">
+            <div class="profile-header">
+              <div class="profile-avatar">
+                <span>HR</span>
+              </div>
+              <div class="profile-info">
+                <h2>HR Manager</h2>
+                <p>Human Resources Department</p>
+                <p>hr.manager@company.com</p>
+              </div>
+            </div>
+            <div class="profile-content">
+              <div class="profile-section">
+                <h3>Personal Information</h3>
+                <div class="form-group">
+                  <label>Full Name</label>
+                  <input type="text" value="HR Manager" class="form-input">
+                </div>
+                <div class="form-group">
+                  <label>Email</label>
+                  <input type="email" value="hr.manager@company.com" class="form-input">
+                </div>
+                <div class="form-group">
+                  <label>Phone</label>
+                  <input type="tel" value="+1 (555) 123-4567" class="form-input">
+                </div>
+                <div class="form-group">
+                  <label>Department</label>
+                  <input type="text" value="Human Resources" class="form-input" disabled>
+                </div>
+                <div class="form-group">
+                  <label>Position</label>
+                  <input type="text" value="HR Manager" class="form-input" disabled>
+                </div>
+                <div class="form-actions">
+                  <button class="primary-btn">Save Changes</button>
+                </div>
+              </div>
+              <div class="profile-section">
+                <h3>Change Password</h3>
+                <div class="form-group">
+                  <label>Current Password</label>
+                  <input type="password" class="form-input">
+                </div>
+                <div class="form-group">
+                  <label>New Password</label>
+                  <input type="password" class="form-input">
+                </div>
+                <div class="form-group">
+                  <label>Confirm New Password</label>
+                  <input type="password" class="form-input">
+                </div>
+                <div class="form-actions">
+                  <button class="primary-btn">Update Password</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Settings Page -->
+        <div class="page" id="settings-page">
+          <div class="settings-container">
+            <div class="settings-section">
+              <h3>Notification Settings</h3>
+              <div class="setting-item">
+                <div class="setting-info">
+                  <h4>Email Notifications</h4>
+                  <p>Receive email notifications for important updates</p>
+                </div>
+                <div class="setting-control">
+                  <label class="toggle">
+                    <input type="checkbox" checked>
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+              </div>
+              <div class="setting-item">
+                <div class="setting-info">
+                  <h4>New Employee Alerts</h4>
+                  <p>Get notified when a new employee is added</p>
+                </div>
+                <div class="setting-control">
+                  <label class="toggle">
+                    <input type="checkbox" checked>
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+              </div>
+              <div class="setting-item">
+                <div class="setting-info">
+                  <h4>Salary Processing Alerts</h4>
+                  <p>Get notified when salaries are processed</p>
+                </div>
+                <div class="setting-control">
+                  <label class="toggle">
+                    <input type="checkbox" checked>
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="settings-section">
+              <h3>Display Settings</h3>
+              <div class="setting-item">
+                <div class="setting-info">
+                  <h4>Dark Mode</h4>
+                  <p>Switch between light and dark themes</p>
+                </div>
+                <div class="setting-control">
+                  <label class="toggle">
+                    <input type="checkbox" id="dark-mode-toggle">
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+              </div>
+              <div class="setting-item">
+                <div class="setting-info">
+                  <h4>Compact View</h4>
+                  <p>Use a more compact layout for tables and lists</p>
+                </div>
+                <div class="setting-control">
+                  <label class="toggle">
+                    <input type="checkbox">
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="settings-section">
+              <h3>System Settings</h3>
+              <div class="setting-item">
+                <div class="setting-info">
+                  <h4>Data Export Format</h4>
+                  <p>Choose the default format for data exports</p>
+                </div>
+                <div class="setting-control">
+                  <select class="form-select">
+                    <option value="excel">Excel (.xlsx)</option>
+                    <option value="csv">CSV</option>
+                    <option value="pdf">PDF</option>
+                  </select>
+                </div>
+              </div>
+              <div class="setting-item">
+                <div class="setting-info">
+                  <h4>Language</h4>
+                  <p>Select your preferred language</p>
+                </div>
+                <div class="setting-control">
+                  <select class="form-select">
+                    <option value="en">English</option>
+                    <option value="es">Spanish</option>
+                    <option value="fr">French</option>
+                    <option value="de">German</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
