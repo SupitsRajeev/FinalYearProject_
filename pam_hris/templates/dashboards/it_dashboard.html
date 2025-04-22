@@ -1,11 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    WIP
-</body>
-</html>
+{% extends 'partials/base_dashboard.html' %}
+
+{% block content %}
+  <h2>Welcome to the IT Dashboard</h2>
+
+  {% if user.isIt and not user.is_privileged %}
+    <div class="request-access-box" style="margin-top: 20px;">
+      <p>You currently do not have access to the HR Application.</p>
+      <a href="{% url 'request_access' %}">
+        <button>Request Privileged Access</button>
+      </a>
+    </div>
+  {% else %}
+    <p>You already have privileged access or are a superuser.</p>
+  {% endif %}
+{% endblock %}

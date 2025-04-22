@@ -42,16 +42,26 @@
             </span>
           </td>
           <td>
+            <!-- Activate/Deactivate Form -->
             <form action="{% url 'toggle_user_status' user.id %}" method="post" class="action-form">
               {% csrf_token %}
               <button type="button"
-        class="toggle-button {% if user.is_active %}deactivate{% else %}activate{% endif %}"
-        onclick="confirmToggle(this.form, '{{ user.username }}', {% if user.is_active %}false{% else %}true{% endif %})">
-  {% if user.is_active %}Deactivate{% else %}Activate{% endif %}
-</button>
-
-
+                class="toggle-button {% if user.is_active %}deactivate{% else %}activate{% endif %}"
+                onclick="confirmToggle(this.form, '{{ user.username }}', {% if user.is_active %}false{% else %}true{% endif %})">
+                {% if user.is_active %}Deactivate{% else %}Activate{% endif %}
+              </button>
             </form>
+
+            <!-- Revoke Privilege Form -->
+            {% if user.is_privileged %}
+              <form action="{% url 'revoke_privilege' user.id %}" method="post" class="action-form" style="margin-top: 8px;">
+                {% csrf_token %}
+                <button type="submit" class="toggle-button deactivate"
+                        onclick="return confirm('Revoke privileged access for {{ user.username }}?');">
+                  Revoke Privilege
+                </button>
+              </form>
+            {% endif %}
           </td>
         </tr>
         {% endfor %}
@@ -60,6 +70,7 @@
   </div>
 </div>
 
+<!-- Your original styles and script below remain unchanged -->
 <style>
   .user-management-container {
     padding: 20px;
@@ -234,21 +245,21 @@
       flex-direction: column;
       align-items: flex-start;
     }
-    
+
     .search-container {
       width: 100%;
       margin-top: 15px;
     }
-    
+
     .search-input {
       flex-grow: 1;
     }
-    
+
     .users-table {
       font-size: 0.75rem;
     }
-    
-    .users-table th, 
+
+    .users-table th,
     .users-table td {
       padding: 8px 12px;
     }
@@ -257,7 +268,7 @@
 
 <script>
   // Search and filter functionality
-  document.addEventListener('DOMContentLoaded', function() {
+  document.addEventListener('DOMContentLoaded', function () {
     const searchInput = document.getElementById('userSearch');
     const departmentFilter = document.getElementById('departmentFilter');
     const table = document.getElementById('usersTable');
@@ -271,10 +282,10 @@
         const username = row.cells[0].textContent.toLowerCase();
         const email = row.cells[1].textContent.toLowerCase();
         const department = row.getAttribute('data-department');
-        
+
         const matchesSearch = username.includes(searchTerm) || email.includes(searchTerm);
         const matchesDepartment = departmentValue === 'all' || department === departmentValue;
-        
+
         row.style.display = (matchesSearch && matchesDepartment) ? '' : 'none';
       });
     }
@@ -287,11 +298,10 @@
   function confirmToggle(form, username, activate) {
     const action = activate ? 'activate' : 'deactivate';
     const message = `Are you sure you want to ${action} user "${username}"?`;
-    
+
     if (confirm(message)) {
       form.submit();
     }
   }
 </script>
 {% endblock %}
-

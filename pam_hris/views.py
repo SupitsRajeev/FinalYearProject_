@@ -1,47 +1,63 @@
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.shortcuts import render, redirect
-from .models import UserPriviledge, User, SessionLog
-from hr_management.models import HREmployee, HRSalarySheet
-# from it_management.models import ManagedUser
 from django.contrib.auth import logout
 from django.http import HttpResponseForbidden
-from django.contrib.auth.decorators import user_passes_test
 from django.views.decorators.http import require_POST
+from .models import UserPriviledge, User, SessionLog, PrivilegeRequest
+from hr_management.models import HREmployee, HRSalarySheet
 
 
+# ----------------------------
+# Public & Authentication Views
+# ----------------------------
 
 def landing_page(request):
     return render(request, 'landing.html')
 
 
+def logout_view(request):
+    logout(request)
+    return redirect('login')
+
+
+# ----------------------------
+# Role-Based Redirect Handler
+# ----------------------------
+
 @login_required
 def login_redirect(request):
     user = request.user
 
+    # Superuser → Admin Dashboard
     if user.is_superuser:
+        pending_requests = PrivilegeRequest.objects.filter(is_reviewed=False)
         return render(request, 'partials/base_dashboard.html', {
             'user': user,
             'hr_employees': HREmployee.objects.all(),
             'hr_salaries': HRSalarySheet.objects.all(),
             'it_sessions': SessionLog.objects.all(),
+            'pending_requests': pending_requests,
         })
 
-    try:
-        priv = UserPriviledge.objects.get(user=user)
-        role = priv.priviledge_group.role_level
+    # HR → HR dashboard
+    if user.isHr:
+        return redirect('hr_dashboard')
 
-        if role == 1:
-            return redirect('hr_dashboard')
-        elif role == 2:
-            return redirect('it_dashboard')
-        elif role == 3:
-            return redirect('hr_application')  # Optional: adjust if not needed anymore
-        else:
-            return redirect('no_privilege')
-    except UserPriviledge.DoesNotExist:
-        return redirect('no_privilege')
+    # IT → IT dashboard
+    if user.isIt:
+        return redirect('it_dashboard')
+
+    # Privileged access → HR Application
+    if user.is_privileged:
+        return redirect('hr_application')
+
+    # Fallback → No Privilege
+    return redirect('no_privilege')
 
 
+# ----------------------------
+# Dashboard Views
+# ----------------------------
 
 @login_required
 def hr_application_view(request):
@@ -63,7 +79,6 @@ def hr_application_view(request):
         'it_users': None,
         'it_sessions': SessionLog.objects.all() if role in [2, 3] else None,
     }
-
     return render(request, 'partials/base_dashboard.html', context)
 
 
@@ -89,10 +104,10 @@ def it_dashboard_view(request):
     SessionLog.objects.create(user=request.user, activity="Accessed IT Dashboard")
 
     context = {
-        'it_users': None,  # ← Placeholder, since ManagedUser is commented
+        'it_users': None,
         'it_sessions': SessionLog.objects.all(),
     }
-    return render(request, 'dashboards/it_dashboard.html', context)  
+    return render(request, 'dashboards/it_dashboard.html', context)
 
 
 @login_required
@@ -100,16 +115,15 @@ def no_privilege_fallback(request):
     return render(request, 'dashboards/no_privilege.html')
 
 
-def logout_view(request):
-    logout(request)
-    return redirect('login')
+# ----------------------------
+# Admin User Management Views
+# ----------------------------
 
 @login_required
 @user_passes_test(lambda u: u.is_superuser)
 def manage_users_view(request):
-    users = User.objects.exclude(is_superuser=True)  # You can change this if needed
+    users = User.objects.exclude(is_superuser=True)
     return render(request, 'partials/user_management.html', {'users': users})
-
 
 
 @login_required
@@ -122,6 +136,70 @@ def toggle_user_status(request, user_id):
             return HttpResponseForbidden("Cannot deactivate superuser.")
         user.is_active = not user.is_active
         user.save()
+    except User.DoesNotExist:
+        pass
+    return redirect('manage_users')
+
+
+# ----------------------------
+# Privileged Access Request Views
+# ----------------------------
+
+# IT users can request elevated (privileged) access
+@login_required
+@user_passes_test(lambda u: u.isIt and not u.is_privileged)
+def request_privilege_view(request):
+    existing = PrivilegeRequest.objects.filter(user=request.user, is_reviewed=False).first()
+
+    if existing:
+        return render(request, 'partials/request_status.html', {"message": "You already have a pending request."})
+
+    if request.method == 'POST':
+        reason = request.POST.get('reason', '')
+        PrivilegeRequest.objects.create(user=request.user, reason=reason)
+        return render(request, 'partials/request_status.html', {"message": "Request submitted successfully."})
+
+    return render(request, 'partials/request_form.html')
+
+
+# Superuser can view all unreviewed privilege requests
+@login_required
+@user_passes_test(lambda u: u.is_superuser)
+def review_privilege_requests_view(request):
+    requests = PrivilegeRequest.objects.filter(is_reviewed=False)
+    return render(request, 'partials/review_requests.html', {"requests": requests})
+
+
+# Superuser approves a specific request and grants privileged access
+@login_required
+@user_passes_test(lambda u: u.is_superuser)
+@require_POST
+def approve_privilege_view(request, request_id):
+    try:
+        req = PrivilegeRequest.objects.get(id=request_id)
+        req.is_reviewed = True
+        req.is_approved = True
+        req.save()
+
+        user = req.user
+        user.is_privileged = True
+        user.save()
+    except PrivilegeRequest.DoesNotExist:
+        pass
+
+    return redirect('review_privilege_requests')
+
+
+# Superuser can revoke previously granted privileged access
+@login_required
+@user_passes_test(lambda u: u.is_superuser)
+@require_POST
+def revoke_privilege_view(request, user_id):
+    try:
+        user = User.objects.get(pk=user_id)
+        if user.is_privileged:
+            user.is_privileged = False
+            user.save()
     except User.DoesNotExist:
         pass
     return redirect('manage_users')

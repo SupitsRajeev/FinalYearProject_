@@ -14,9 +14,9 @@ class User(AbstractUser):
     updated_at = models.DateTimeField(auto_now=True)
 
     def save(self, *args, **kwargs):
-        if self.is_superuser:
-            self.is_privileged = True
-        super().save(*args, **kwargs)
+    # ❌ Don't auto-assign privileged for superusers anymore
+     super().save(*args, **kwargs)
+
 
     def __str__(self):
         return f"{self.name} ({self.email})"
@@ -54,3 +54,13 @@ class SessionLog(models.Model):
 
     def __str__(self):
         return f"{self.user.username} - {self.login_time} - {self.activity or 'Session'}"
+
+class PrivilegeRequest(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    reason = models.TextField(blank=True)
+    is_approved = models.BooleanField(default=False)
+    is_reviewed = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user.username} – {'Approved' if self.is_approved else 'Pending'}"

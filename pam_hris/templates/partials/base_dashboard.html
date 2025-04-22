@@ -109,11 +109,34 @@
         </div>
       </header>
 
-      <!-- Dynamic Content Goes Here -->
+      <!-- Main Dashboard Body -->
       <main class="content">
-        {% block content %}
-        <!-- Child templates will insert their content here -->
-        {% endblock %}
+
+        <!--  SUPERUSER NOTIFICATION BLOCK: Show pending privileged access requests -->
+        {% if pending_requests %}
+          <div style="background: #fff; padding: 20px; border-radius: 8px; margin-bottom: 24px; box-shadow: 0 2px 5px rgba(0,0,0,0.06);">
+            <h3 style="margin-bottom: 12px;">🛎 Pending Privileged Access Requests</h3>
+            <ul>
+              {% for req in pending_requests %}
+                <li style="margin-bottom: 10px;">
+                  <strong>{{ req.user.username }}</strong>: {{ req.reason|default:"No reason provided." }}
+                  
+                  <!-- Approval form directly in dashboard -->
+                  <form method="post" action="{% url 'approve_privilege' req.id %}" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" style="margin-left: 12px; background-color: #10b981; color: white; padding: 6px 12px; border: none; border-radius: 4px; cursor: pointer;">
+                      Approve
+                    </button>
+                  </form>
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+        {% endif %}
+        <!-- ✅ END: Superuser Pending Request Block -->
+
+        <!-- Child templates will insert their dynamic dashboard content here -->
+        {% block content %}{% endblock %}
       </main>
     </div>
   </div>
