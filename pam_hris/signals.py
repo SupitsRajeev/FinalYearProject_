@@ -6,12 +6,10 @@ from .models import SessionLog
 from pathlib import Path
 from .models import User  
 
-
-# Use raw string for Windows path to avoid escape issues
+# Path to save JSON logs
 LOG_FILE = Path(r"C:/FinalYearProject/elk/logstash-pipeline/logs/sessionlogs.json")
 
 def append_log_to_file(data):
-    # Ensure JSON is dumped as one-liner (not pretty-printed)
     with open(LOG_FILE, "a", encoding="utf-8") as f:
         json.dump(data, f)
         f.write("\n")
@@ -21,7 +19,8 @@ def log_login(sender, request, user, **kwargs):
     session = SessionLog.objects.create(
         user=user,
         login_time=now(),
-        ip_address=request.META.get('REMOTE_ADDR')
+        ip_address=request.META.get('REMOTE_ADDR'),
+        activity="User Logged In"    #  ADD this line!
     )
     append_log_to_file({
         "id": session.id,
@@ -37,6 +36,7 @@ def log_user_logout(sender, request, user, **kwargs):
         session = SessionLog.objects.filter(user=user).latest('login_time')
         if not session.logout_time:
             session.logout_time = now()
+            session.activity = "User Logged Out"   #  ADD this line!
             session.save()
             append_log_to_file({
                 "id": session.id,

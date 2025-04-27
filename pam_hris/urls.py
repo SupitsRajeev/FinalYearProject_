@@ -38,4 +38,11 @@ urlpatterns = [
     path('request-access/', views.request_privilege_view, name='request_access'),
     path('review-requests/', views.review_privilege_requests_view, name='review_privilege_requests'),
     path('approve-request/<int:request_id>/', views.approve_privilege_view, name='approve_privilege'),
+   # Session Monitoring View
+   path('session-logs/', views.session_logs_view, name='session_logs'),
+
+   path('download-session-logs-pdf/', views.download_session_logs_pdf, name='download_session_logs_pdf'),
+
+
+
 ]

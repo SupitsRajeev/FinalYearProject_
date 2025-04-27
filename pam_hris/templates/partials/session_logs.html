@@ -1,0 +1,41 @@
+{% extends "partials/base_dashboard.html" %}
+
+{% block content %}
+
+<!-- 📄 Download PDF Button at Top -->
+<a href="{% url 'download_session_logs_pdf' %}" 
+   style="background-color: #ef4444; color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; margin-bottom: 20px; display: inline-block;">
+  📄 Download Session Logs (PDF)
+</a>
+
+<!-- 🖥 Session Logs Table -->
+<div style="background: white; padding: 24px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+  <h2 style="margin-bottom: 20px;">🖥 Session Monitoring Logs</h2>
+
+  <table style="width: 100%; border-collapse: collapse;">
+    <thead style="background-color: #f3f4f6;">
+      <tr>
+        <th style="padding: 10px;">Username</th>
+        <th style="padding: 10px;">Login Time</th>
+        <th style="padding: 10px;">Logout Time</th>
+        <th style="padding: 10px;">IP Address</th>
+        <th style="padding: 10px;">Activity</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for log in logs %}
+      <tr style="border-bottom: 1px solid #e5e7eb;">
+        <td style="padding: 10px;">{{ log.user.username }}</td>
+        <td style="padding: 10px;">{{ log.login_time }}</td>
+        <td style="padding: 10px;">{{ log.logout_time|default:"Still Active" }}</td>
+        <td style="padding: 10px;">{{ log.ip_address|default:"N/A" }}</td>
+        <td>{{ session.activity|default:"-" }}</td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="4" style="text-align: center; padding: 20px;">No session logs available.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% endblock %}

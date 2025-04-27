@@ -1,10 +1,13 @@
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.shortcuts import render, redirect
 from django.contrib.auth import logout
-from django.http import HttpResponseForbidden
+from django.http import HttpResponse
 from django.views.decorators.http import require_POST
 from .models import UserPriviledge, User, SessionLog, PrivilegeRequest
 from hr_management.models import HREmployee, HRSalarySheet
+from reportlab.lib.pagesizes import letter
+from reportlab.pdfgen import canvas
+from pathlib import Path
 
 
 # ----------------------------
@@ -167,7 +170,7 @@ def request_privilege_view(request):
 @user_passes_test(lambda u: u.is_superuser)
 def review_privilege_requests_view(request):
     requests = PrivilegeRequest.objects.filter(is_reviewed=False)
-    return render(request, 'partials/review_requests.html', {"requests": requests})
+    return render(request, 'partials/request_status.html', {"requests": requests})
 
 
 # Superuser approves a specific request and grants privileged access
@@ -203,3 +206,59 @@ def revoke_privilege_view(request, user_id):
     except User.DoesNotExist:
         pass
     return redirect('manage_users')
+
+# -------------For rendering session logs in dashboard---------------
+@login_required
+def session_logs_view(request):
+    logs = SessionLog.objects.all().order_by('-login_time')  # Latest first
+    return render(request, 'partials/session_logs.html', {'logs': logs})
+
+
+@login_required
+def download_session_logs_pdf(request):
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="session_logs.pdf"'
+
+    p = canvas.Canvas(response, pagesize=letter)
+    width, height = letter
+
+    p.setFont("Helvetica-Bold", 16)
+    p.drawString(200, height - 50, "Session Monitoring Report")
+
+    p.setFont("Helvetica-Bold", 12)
+    p.drawString(50, height - 100, "Username")
+    p.drawString(200, height - 100, "Login Time")
+    p.drawString(350, height - 100, "Logout Time")
+    p.drawString(500, height - 100, "IP Address")
+
+    logs = SessionLog.objects.all().order_by('-login_time')
+    y = height - 120
+    p.setFont("Helvetica", 10)
+    
+    for log in logs:
+        p.drawString(50, y, log.user.username)
+        p.drawString(200, y, log.login_time.strftime('%Y-%m-%d %H:%M:%S'))
+        p.drawString(350, y, log.logout_time.strftime('%Y-%m-%d %H:%M:%S') if log.logout_time else 'Still Active')
+        p.drawString(500, y, log.ip_address or 'N/A')
+        y -= 20
+
+        if y < 50:
+            p.showPage()
+            y = height - 50
+            p.setFont("Helvetica", 10)
+
+    p.showPage()
+    p.save()
+
+    # Add this part to LOG the Download Event
+    SessionLog.objects.create(
+        user=request.user,
+        activity="Downloaded Session Logs"
+    )
+    # Save to Server Folder also
+    folder_path = Path(r"C:/FinalYearProject/elk/logstash-pipeline/logs/")
+    folder_path.mkdir(parents=True, exist_ok=True)
+    with open(folder_path / 'sessionlogs.pdf', 'wb') as f:
+     f.write(response.content)
+
+    return response
