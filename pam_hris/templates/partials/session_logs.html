@@ -2,40 +2,258 @@
 
 {% block content %}
 
-<!-- 📄 Download PDF Button at Top -->
-<a href="{% url 'download_session_logs_pdf' %}" 
-   style="background-color: #ef4444; color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; margin-bottom: 20px; display: inline-block;">
-  📄 Download Session Logs (PDF)
-</a>
-
-<!-- 🖥 Session Logs Table -->
-<div style="background: white; padding: 24px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
-  <h2 style="margin-bottom: 20px;">🖥 Session Monitoring Logs</h2>
-
-  <table style="width: 100%; border-collapse: collapse;">
-    <thead style="background-color: #f3f4f6;">
-      <tr>
-        <th style="padding: 10px;">Username</th>
-        <th style="padding: 10px;">Login Time</th>
-        <th style="padding: 10px;">Logout Time</th>
-        <th style="padding: 10px;">IP Address</th>
-        <th style="padding: 10px;">Activity</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for log in logs %}
-      <tr style="border-bottom: 1px solid #e5e7eb;">
-        <td style="padding: 10px;">{{ log.user.username }}</td>
-        <td style="padding: 10px;">{{ log.login_time }}</td>
-        <td style="padding: 10px;">{{ log.logout_time|default:"Still Active" }}</td>
-        <td style="padding: 10px;">{{ log.ip_address|default:"N/A" }}</td>
-        <td>{{ session.activity|default:"-" }}</td>
-      </tr>
-      {% empty %}
-      <tr><td colspan="4" style="text-align: center; padding: 20px;">No session logs available.</td></tr>
-      {% endfor %}
-    </tbody>
-  </table>
+<!-- Session Logs Header and Download Button -->
+<div class="session-header">
+  <h2 class="section-title">🖥 Session Monitoring Logs</h2>
+  <a href="{% url 'download_session_logs_pdf' %}" class="download-button">
+    <span class="download-icon">📄</span>
+    <span>Download Session Logs (PDF)</span>
+  </a>
 </div>
+
+<!-- Session Logs Table -->
+<div class="session-logs-container">
+  <div class="table-responsive">
+    <table class="session-table">
+      <thead>
+        <tr>
+          <th>Username</th>
+          <th>Login Time</th>
+          <th>Logout Time</th>
+          <th>IP Address</th>
+          <th>Activity</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for log in logs %}
+        <tr>
+          <td>
+            <div class="user-cell">
+              <div class="user-avatar">{{ log.user.username|slice:":1"|upper }}</div>
+              <span>{{ log.user.username }}</span>
+            </div>
+          </td>
+          <td>{{ log.login_time }}</td>
+          <td>
+            {% if log.logout_time %}
+              {{ log.logout_time }}
+            {% else %}
+              <span class="status-badge active">Still Active</span>
+            {% endif %}
+          </td>
+          <td>{{ log.ip_address|default:"N/A" }}</td>
+          <td>{{ session.activity|default:"-" }}</td>
+        </tr>
+        {% empty %}
+        <tr class="empty-row">
+          <td colspan="5">
+            <div class="empty-state">
+              <div class="empty-icon">📊</div>
+              <p>No session logs available.</p>
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<style>
+  /* Session Logs Page Styling */
+  .session-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  
+  .section-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--foreground);
+    margin: 0;
+    background: linear-gradient(to right, #6366f1, #818cf8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .download-button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: linear-gradient(135deg, #ef4444, #f87171);
+    color: white;
+    padding: 0.75rem 1.25rem;
+    border-radius: 0.75rem;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px -1px rgba(239, 68, 68, 0.2), 0 2px 4px -2px rgba(239, 68, 68, 0.1);
+    border: none;
+    cursor: pointer;
+  }
+  
+  .download-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(239, 68, 68, 0.3), 0 4px 6px -4px rgba(239, 68, 68, 0.2);
+  }
+  
+  .download-button:active {
+    transform: translateY(0);
+  }
+  
+  .download-icon {
+    font-size: 1.25rem;
+  }
+  
+  .session-logs-container {
+    background: white;
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    border: 1px solid var(--border);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .session-logs-container:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .table-responsive {
+    overflow-x: auto;
+    padding: 1.5rem;
+  }
+  
+  .session-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+  }
+  
+  .session-table th {
+    background-color: var(--secondary);
+    color: var(--foreground);
+    font-weight: 600;
+    text-align: left;
+    padding: 1rem;
+    border-bottom: 2px solid var(--border);
+    position: relative;
+  }
+  
+  .session-table th:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(to right, #6366f1, transparent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
+  }
+  
+  .session-table:hover th:after {
+    transform: scaleX(1);
+  }
+  
+  .session-table td {
+    padding: 1rem;
+    border-bottom: 1px solid var(--border);
+    transition: background-color 0.2s ease;
+  }
+  
+  .session-table tr:hover td {
+    background-color: var(--secondary);
+  }
+  
+  .session-table tr:last-child td {
+    border-bottom: none;
+  }
+  
+  .user-cell {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  
+  .user-avatar {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #6366f1, #818cf8);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 0.875rem;
+  }
+  
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 500;
+  }
+  
+  .status-badge.active {
+    background-color: #dcfce7;
+    color: #16a34a;
+  }
+  
+  .empty-row td {
+    padding: 3rem 1rem !important;
+  }
+  
+  .empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+  }
+  
+  .empty-icon {
+    font-size: 2.5rem;
+    opacity: 0.5;
+  }
+  
+  .empty-state p {
+    color: var(--muted-foreground);
+    font-size: 1rem;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .session-header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    
+    .download-button {
+      width: 100%;
+      justify-content: center;
+    }
+    
+    .table-responsive {
+      padding: 1rem;
+    }
+    
+    .session-table th,
+    .session-table td {
+      padding: 0.75rem;
+    }
+  }
+</style>
 
 {% endblock %}

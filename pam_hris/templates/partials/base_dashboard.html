@@ -134,7 +134,7 @@
             </ul>
           </div>
         {% endif %}
-        <!-- ✅ END: Superuser Pending Request Block -->
+        <!-- END: Superuser Pending Request Block -->
 
         <!-- Child templates will insert their dynamic dashboard content here -->
         {% block content %}{% endblock %}
@@ -159,5 +159,10 @@
       document.querySelector('.dropdown-menu').classList.remove('show');
     });
   </script>
-</body>
+
+  <script>
+  window.addEventListener('beforeunload', function (e) {
+      navigator.sendBeacon('/logout-beacon/');
+  });
+  </script>
 </html>

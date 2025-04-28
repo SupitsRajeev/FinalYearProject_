@@ -13,6 +13,23 @@
             align-items: center;
             height: 100vh;
         }
+        .page-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 900px;
+            padding: 0 20px;
+        }
+        .logo-container {
+            flex: 0 0 auto;
+            margin-right: auto;
+            padding-left: 20px; /* Add padding to move logo more to the left */
+        }
+        .logo-container img {
+            max-width: 100%;
+            height: auto;
+        }
         .login-container {
             background-color: #ffffff;
             padding: 20px 30px;
@@ -20,6 +37,7 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             width: 100%;
             max-width: 400px;
+            margin-left: auto; /* Push login form to the right */
         }
         .login-container h2 {
             margin-bottom: 20px;
@@ -60,19 +78,25 @@
     </style>
 </head>
 <body>
-    <div class="login-container">
-        <h2>Login to PAM-HRIS</h2>
-        {% if form.errors %}
-            <p class="error-message">Invalid login details. Please try again.</p>
-        {% endif %}
-        <form method="post">
-            {% csrf_token %}
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="username" required>
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required>
-            <button type="submit">Login</button>
-        </form>
+    <div class="page-container">
+        <div class="logo-container">
+            <!-- Replace with your actual logo -->
+            <img src="/placeholder.svg?height=150&width=150" alt="PAM-HRIS Logo">
+        </div>
+        <div class="login-container">
+            <h2>Login to PAM-HRIS</h2>
+            {% if form.errors %}
+                <p class="error-message">Invalid login details. Please try again.</p>
+            {% endif %}
+            <form method="post">
+                {% csrf_token %}
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required>
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+                <button type="submit">Login</button>
+            </form>
+        </div>
     </div>
 </body>
 </html>

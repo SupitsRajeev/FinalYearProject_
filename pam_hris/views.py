@@ -8,6 +8,8 @@ from hr_management.models import HREmployee, HRSalarySheet
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 from pathlib import Path
+from django.http import JsonResponse
+from django.utils.timezone import now
 
 
 # ----------------------------
@@ -19,9 +21,33 @@ def landing_page(request):
 
 
 def logout_view(request):
+    if request.user.is_authenticated:
+        try:
+            session_log = SessionLog.objects.filter(user=request.user, logout_time__isnull=True).latest('login_time')
+            if session_log:
+                session_log.logout_time = now()
+                session_log.activity = "User Logged Out"
+                session_log.save()
+        except SessionLog.DoesNotExist:
+            pass  # No active session, ignore safely.
+
     logout(request)
     return redirect('login')
 
+
+def logout_beacon_view(request):
+    if request.user.is_authenticated:
+        try:
+            session_log = SessionLog.objects.filter(user=request.user, logout_time__isnull=True).latest('login_time')
+            if session_log:
+                session_log.logout_time = now()
+                session_log.activity = "User Logged Out (Beacon)"
+                session_log.save()
+        except SessionLog.DoesNotExist:
+            pass
+
+    logout(request)
+    return JsonResponse({'status': 'logged_out'})
 
 # ----------------------------
 # Role-Based Redirect Handler
@@ -170,7 +196,7 @@ def request_privilege_view(request):
 @user_passes_test(lambda u: u.is_superuser)
 def review_privilege_requests_view(request):
     requests = PrivilegeRequest.objects.filter(is_reviewed=False)
-    return render(request, 'partials/request_status.html', {"requests": requests})
+    return render(request, 'partials/review_requests.html', {"requests": requests})
 
 
 # Superuser approves a specific request and grants privileged access
